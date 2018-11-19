@@ -186,6 +186,12 @@ nnoremap # #zz
 nnoremap g* g*zz
 nnoremap g# g#zz
 
+" standardjs code style
+let g:ale_linters = {
+\   'javascript': ['standard'],
+\}
+let g:ale_fixers = {'javascript': ['standard']}
+
 
 
 " Tabmerge -- Merge the windows in a tab with the current tab.
