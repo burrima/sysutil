@@ -174,6 +174,18 @@ filetype plugin on
 " paths:
 set path=**
 
+" enter the display line after searches. (This makes it *much* easier to see
+" the matched line.)
+" "
+" " More info: http://www.vim.org/tips/tip.php?tip_id=528
+" "
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap # #zz
+nnoremap g* g*zz
+nnoremap g# g#zz
+
 
 
 " Tabmerge -- Merge the windows in a tab with the current tab.
