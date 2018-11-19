@@ -111,7 +111,7 @@ set wildmode=longest,list
 set smartcase
 set laststatus=2
 set hidden
-set switchbuf=usetab,newtab
+" set switchbuf=usetab,newtab
 " abbreviations:
 cabbrev tp tabp
 cabbrev tn tabn
