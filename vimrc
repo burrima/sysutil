@@ -181,12 +181,12 @@ set path=**
 " "
 " " More info: http://www.vim.org/tips/tip.php?tip_id=528
 " "
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap * *zz
-nnoremap # #zz
-nnoremap g* g*zz
-nnoremap g# g#zz
+"nnoremap n nzz
+"nnoremap N Nzz
+"nnoremap * *zz
+"nnoremap # #zz
+"nnoremap g* g*zz
+"nnoremap g# g#zz
 
 " standardjs code style
 let g:ale_linters = {
