@@ -113,8 +113,8 @@ set laststatus=2
 set hidden
 " set switchbuf=usetab,newtab
 " abbreviations:
-cabbrev tp tabp
-cabbrev tn tabn
+"cabbrev tp tabp
+"cabbrev tn tabn
 cabbrev te tabedit
 cabbrev vdiff vert diffsplit
 map ' `
@@ -134,11 +134,11 @@ nnoremap <silent> [b :bprev<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
-nnoremap <silent> [t :tabprev<CR>
-nnoremap <silent> ]t :tabnext<CR>
-nnoremap <silent> [T :tabfirst<CR>
-nnoremap <silent> ]T :tablast<CR>
-nnoremap <silent> <C-]> <C-w><C-]><C-w>T
+"nnoremap <silent> [t :tabprev<CR>
+"nnoremap <silent> ]t :tabnext<CR>
+"nnoremap <silent> [T :tabfirst<CR>
+"nnoremap <silent> ]T :tablast<CR>
+"nnoremap <silent> <C-]> <C-w><C-]><C-w>T
 map ö ;
 map é ,
 map ü [
@@ -175,6 +175,9 @@ set backupdir=/tmp
 filetype plugin on
 " paths:
 set path=**
+" open splits more intuitively
+set splitright
+set splitbelow
 
 " enter the display line after searches. (This makes it *much* easier to see
 " the matched line.)
