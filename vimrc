@@ -152,8 +152,8 @@ nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 " map F5 to the command ':make'
 map <silent> <F5> :update<CR>:make<CR>
 map <silent> <S-F5> :wall<CR>:make!<CR>:make show &<CR>
-" map Tab to switch buffers
-:nnoremap <Tab> :buffers<CR>:buffer<Space>
+" map ,b to switch buffers (used <Tab> before, but clashes with <C-I>)
+:nnoremap ,b :buffers<CR>:buffer<Space>
 " vimdiff colors:
 highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white
 highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black
