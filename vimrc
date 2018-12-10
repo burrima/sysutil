@@ -15,8 +15,8 @@ set ruler   " show the cursor position all the time
 " Only do this part when compiled with support for autocommands
 if has("autocmd")
   augroup redhat
-    " In text files, always limit the width of text to 78 characters
-    autocmd BufRead *.txt set tw=80
+"    " In text files, always limit the width of text to 78 characters
+"    autocmd BufRead *.txt set tw=80
     " When editing a file, always jump to the last cursor position
     autocmd BufReadPost *
     \ if line("'\"") > 0 && line ("'\"") <= line("$") |
@@ -99,8 +99,8 @@ endif
 
 " burrima's own settings:
 set textwidth=80
-set tabstop=2 
-set shiftwidth=2 
+set tabstop=2
+set shiftwidth=2
 set expandtab
 set autoindent
 set nowrap
@@ -158,7 +158,7 @@ map <silent> <S-F5> :wall<CR>:make!<CR>:make show &<CR>
 highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white
 highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black
 highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black
-highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black 
+highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black
 autocmd Syntax * call matchadd('ErrorMsg', '\(ERROR\|FAILED\)')
 autocmd Syntax * call matchadd('DiffAdd', '\(PASSED\|OK\)')
 autocmd Syntax * call matchadd('Todo', '\(TODO\|todo\|Todo\|tbd\|Tbd\)')
@@ -166,6 +166,8 @@ autocmd Syntax * call matchadd('Todo', '\(TODO\|todo\|Todo\|tbd\|Tbd\)')
 hi clear SpecialKey
 hi link SpecialKey Error
 " spell check highlighting:
+set spelllang=en_us
+set spell
 hi clear SpellBad
 hi SpellBad cterm=undercurl,bold
 " put backup files into /tmp:
@@ -194,8 +196,12 @@ set splitbelow
 " standardjs code style
 let g:ale_linters = {
 \   'javascript': ['standard'],
+\   'cpp': ['cpplint'],
 \}
-let g:ale_fixers = {'javascript': ['standard']}
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
+let g:ale_fix_on_save = 1
 
 
 
@@ -314,4 +320,14 @@ function! Tabmerge(...)  " {{{1
 endfunction
 
 " vim:fdm=marker:fdc=2:fdl=1:
+
+
+function DeleteHiddenBuffers()
+  let tpbl=[]
+  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
+  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
+    silent execute 'bwipeout' buf
+  endfor
+endfunction
+
 
