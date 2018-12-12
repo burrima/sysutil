@@ -6,6 +6,7 @@ set fileencoding=utf-8  " The encoding written to file.
 
 set nocompatible  " Use Vim defaults (much better!)
 set bs=indent,eol,start   " allow backspacing over everything in insert mode
+syntax on  " enable syntax highlighting
 
 set backup  " keep a backup file
 set directory=/tmp  " location of swap file
