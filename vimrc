@@ -25,20 +25,20 @@ if has("autocmd")
   augroup END
 endif
 
-if has("cscope") && filereadable("/usr/bin/cscope")
-   set csprg=/usr/bin/cscope
-   set csto=0
-   set cst
-   set nocsverb
-   " add any database in current directory
-   if filereadable("cscope.out")
-      cs add cscope.out
-   " else add database pointed to by environment
-   elseif $CSCOPE_DB != ""
-      cs add $CSCOPE_DB
-   endif
-   set csverb
-endif
+"if has("cscope") && filereadable("/usr/bin/cscope")
+"   set csprg=/usr/bin/cscope
+"   set csto=0
+"   set cst
+"   set nocsverb
+"   " add any database in current directory
+"   if filereadable("cscope.out")
+"      cs add cscope.out
+"   " else add database pointed to by environment
+"   elseif $CSCOPE_DB != ""
+"      cs add $CSCOPE_DB
+"   endif
+"   set csverb
+"endif
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -159,9 +159,9 @@ highlight DiffAdd term=reverse cterm=bold ctermbg=green ctermfg=white
 highlight DiffChange term=reverse cterm=bold ctermbg=cyan ctermfg=black
 highlight DiffText term=reverse cterm=bold ctermbg=gray ctermfg=black
 highlight DiffDelete term=reverse cterm=bold ctermbg=red ctermfg=black
-autocmd Syntax * call matchadd('ErrorMsg', '\(ERROR\|FAILED\)')
-autocmd Syntax * call matchadd('DiffAdd', '\(PASSED\|OK\)')
-autocmd Syntax * call matchadd('Todo', '\(TODO\|todo\|Todo\|tbd\|Tbd\)')
+"autocmd Syntax * call matchadd('ErrorMsg', '\(ERROR\|FAILED\)')
+"autocmd Syntax * call matchadd('DiffAdd', '\(PASSED\|OK\)')
+"autocmd Syntax * call matchadd('Todo', '\(TODO\|todo\|Todo\|tbd\|Tbd\)')
 " highlight unprintable chars as error:
 hi clear SpecialKey
 hi link SpecialKey Error
@@ -170,6 +170,10 @@ set spelllang=en_us
 set spell
 hi clear SpellBad
 hi SpellBad cterm=undercurl,bold
+hi clear SpellLocal
+hi SpellLocal cterm=undercurl,bold
+hi clear SpellCap
+hi SpellCap cterm=reverse
 " put backup files into /tmp:
 set directory=/tmp
 set backupdir=/tmp
@@ -331,3 +335,4 @@ function DeleteHiddenBuffers()
 endfunction
 
 
+execute 'silent! source .vimrc_module'
