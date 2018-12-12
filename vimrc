@@ -12,7 +12,13 @@ set backup  " keep a backup file
 set directory=/tmp  " location of swap file
 set backupdir=/tmp  " location of backup file
 
-set viminfo='20,<500  " marks for 20 files, no more than 500 lines of registers
+" Tell vim to remember certain things when we exit
+"  '10  :  marks will be remembered for up to 10 previously edited files
+"  "100 :  will save up to 100 lines for each register
+"  :20  :  up to 20 lines of command-line history will be remembered
+"  %    :  saves and restores the buffer list
+"  n... :  where to save the viminfo files
+set viminfo='10,\"100,:20,%,n~/.viminfo
 set history=100  " keep 100 lines of command line history
 
 set ruler  " show line and col number of the cursor position
@@ -24,6 +30,8 @@ set incsearch  " show matches while typing
 set path=**  " search in all sub-dirs when searching for a file
 
 set textwidth=80  " maximum width of inserted text
+set colorcolumn=+1  " vertical line at maximum textwidth
+hi ColorColumn ctermbg=lightgrey
 set tabstop=2  " tab width
 set shiftwidth=2  " number of spaces for each step of (auto)indent
 set expandtab  " use spaces instead of tabs
@@ -74,11 +82,6 @@ nnoremap <silent> ]T :tablast<CR>
 nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
 nnoremap <Space> :buffers<CR>:buffer<Space>
 
-" reserved word highlighting:
-"autocmd Syntax * call matchadd('ErrorMsg', '\(ERROR\|FAILED\)')
-"autocmd Syntax * call matchadd('DiffAdd', '\(PASSED\|OK\)')
-autocmd Syntax * call matchadd('Todo', '\(TODO\|todo\|Todo\|tbd\|Tbd\)')
-
 " highlight unprintable chars as error:
 hi clear SpecialKey
 hi link SpecialKey Error
@@ -91,7 +94,23 @@ hi SpellBad cterm=undercurl,bold
 hi clear SpellLocal
 hi SpellLocal cterm=undercurl,bold
 hi clear SpellCap
-hi SpellCap cterm=reverse
+hi SpellCap cterm=undercurl
+
+" Only do this part when compiled with support for autocommands.
+if has("autocmd")
+  " reserved word highlighting:
+  "autocmd Syntax * call matchadd('ErrorMsg', '\(ERROR\|FAILED\)')
+  "autocmd Syntax * call matchadd('DiffAdd', '\(PASSED\|OK\)')
+  autocmd Syntax * call matchadd('Todo', '\(TODO\|todo\|Todo\|tbd\|Tbd\)')
+
+  " Always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+endif
 
 " plugins:
 filetype plugin on
