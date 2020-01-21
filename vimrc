@@ -9,8 +9,8 @@ set bs=indent,eol,start   " allow backspacing over everything in insert mode
 syntax on  " enable syntax highlighting
 
 set backup  " keep a backup file
-set directory=/tmp  " location of swap file
-set backupdir=/tmp  " location of backup file
+set directory=/tmp//  " location of swap file
+set backupdir=/tmp//  " location of backup file
 
 " Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files
