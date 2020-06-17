@@ -119,11 +119,12 @@ filetype plugin on
 let g:ale_linters = {
 \   'javascript': ['standard'],
 \   'cpp': ['cpplint'],
-\   'python': ['flake8'],
+\   'python': ['flake8', 'btaflint'],
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 let g:ale_fix_on_save = 1  " run fixer on save
 let g:ale_lint_on_enter = 0  " don't start linter on file open
 
