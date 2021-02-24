@@ -1,108 +1,75 @@
-" burrima.ch own .vimrc file                                      Version 1.2.1
-"------------------------------------------------------------------------------
+"            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+"                    Version 2, December 2004
+"
+" Copyright (C) 2021 Martin Burri <info@burrima.ch>
+"
+" Everyone is permitted to copy and distribute verbatim or modified
+" copies of this license document, and changing it is allowed as long
+" as the name is changed.
+"
+"            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+"   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+"
+"  0. You just DO WHAT THE FUCK YOU WANT TO.
+"
 
-set encoding=utf-8  " The encoding displayed.
-set fileencoding=utf-8  " The encoding written to file.
+"
+" Personal vimrc file version 2.0.0
+"
+
+" General Config --------------------------------------------------------------
+" map <Leader> key to ',':
+let mapleader = ','
 
 set nocompatible  " Use Vim defaults (much better!)
-set bs=indent,eol,start   " allow backspacing over everything in insert mode
-syntax on  " enable syntax highlighting
 
-set backup  " keep a backup file
-set directory=/tmp//  " location of swap file
-set backupdir=/tmp//  " location of backup file
+" default values, to be overwritten by .editorconfig files (see vim-editorconfig
+" plugin):
+set textwidth=80  " maximum width of inserted text
+set tabstop=4  " tab width
+set shiftwidth=4  " number of spaces for each step of (auto)indent
+set expandtab  " use spaces instead of tabs
 
-" Tell vim to remember certain things when we exit
-"  '10  :  marks will be remembered for up to 10 previously edited files
-"  "100 :  will save up to 100 lines for each register
-"  :20  :  up to 20 lines of command-line history will be remembered
-"  %    :  saves and restores the buffer list
-"  n... :  where to save the viminfo files
-set viminfo='10,\"100,:20,%,n~/.viminfo
-set history=100  " keep 100 lines of command line history
+" use maximum color range in tmux environments:
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set t_Co=256
+set termguicolors
+
+set splitright  " open new vertical splits right of current window
+set splitbelow  " open new horizontal splits right of current window
 
 set ruler  " show line and col number of the cursor position
 set laststatus=2  " always show window status line
 set nowrap  " don't wrap displayed lines
 
-set hlsearch  " highlight search results
-set incsearch  " show matches while typing
 set path=**  " search in all sub-dirs when searching for a file
 
-set textwidth=80  " maximum width of inserted text
 set colorcolumn=+1  " vertical line at maximum textwidth
-hi ColorColumn ctermbg=lightgrey
-set tabstop=2  " tab width
-set shiftwidth=2  " number of spaces for each step of (auto)indent
-set expandtab  " use spaces instead of tabs
-set autoindent  " auto indentation
+"hi ColorColumn ctermbg=lightgrey
 
-set wildmode=longest,list
+set wildmode=longest,list  " Tab completion like in bash
 set hidden  " allow to have unsaved hidden buffers
 
-" set switchbuf=useopen
+" set switchbuf=useopen  " see :help switchbuf
 
-set splitright  " open new vertical splits right of current window
-set splitbelow  " open new horizontal splits right of current window
 
-" abbreviations of ex-commands:
-cabbrev tp tabprevious
-cabbrev tn tabnext
-cabbrev te tabedit
-cabbrev vdiff vert diffsplit
+" Swap, Backup and Undo Files -------------------------------------------------
+set directory=~/.vim/swap//
+call mkdir (&directory, 'p')
+" uncomment to enable backup files:
+"set backup
+"set backupdir=~/.vim/backup//  " location of backup file
+"call mkdir (&backupdir, 'p')
+" uncoment to store undo-history (reload on next start of vim):
+" set undofile
+" set undodir=~/.vim/undo
+" call mkdir (&undodir, 'p')
 
-" key mappings:
-noremap ' `
-noremap ö ;
-noremap é ,
-"noremap ü [
-"noremap ¨ ]  " does not work on some systems
-"noremap ä {
-"noremap $ }
-
-" key to ex mappings:
-nnoremap <silent> [l :lprev<CR>
-nnoremap <silent> ]l :lnext<CR>
-nnoremap <silent> [L :lfirst<CR>
-nnoremap <silent> ]L :llast<CR>
-nnoremap <silent> [q :cprev<CR>
-nnoremap <silent> ]q :cnext<CR>
-nnoremap <silent> [Q :cfirst<CR>
-nnoremap <silent> ]Q :clast<CR>
-nnoremap <silent> [b :bprev<CR>
-nnoremap <silent> ]b :bnext<CR>
-nnoremap <silent> [B :bfirst<CR>
-nnoremap <silent> ]B :blast<CR>
-nnoremap <silent> [t :tabprev<CR>
-nnoremap <silent> ]t :tabnext<CR>
-nnoremap <silent> [T :tabfirst<CR>
-nnoremap <silent> ]T :tablast<CR>
-
-" nnoremap <silent> <C-]> <C-w><C-]><C-w>T  " ctag jump into new Tab
-nnoremap <silent> <C-l> :<C-u>nohlsearch<CR><C-l>
-nnoremap <Space> :buffers<CR>:buffer<Space>
-
-" highlight unprintable chars as error:
-hi clear SpecialKey
-hi link SpecialKey Error
-
-" spell check:
-set spell
-set spelllang=en_us
-hi clear SpellBad
-hi SpellBad cterm=undercurl,bold
-hi clear SpellLocal
-hi SpellLocal cterm=undercurl,bold
-hi clear SpellCap
-hi SpellCap cterm=undercurl
-
-" Only do this part when compiled with support for autocommands.
-if has("autocmd")
-  " reserved word highlighting:
-  "autocmd Syntax * call matchadd('ErrorMsg', '\(ERROR\|FAILED\)')
-  "autocmd Syntax * call matchadd('DiffAdd', '\(PASSED\|OK\)')
-  autocmd Syntax * call matchadd('Todo', '\(TODO\|todo\|Todo\|tbd\|Tbd\)')
-
+augroup restore
+  autocmd!
+  " disable undofile for files in /tmp/:
+  autocmd BufWritePre /tmp/* setlocal noundofile
   " Always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
   " (happens when dropping a file on gvim).
@@ -110,254 +77,237 @@ if has("autocmd")
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
     \ endif
-endif
+augroup END
 
-" plugins:
-filetype plugin on
+" Tell vim to remember certain things when we exit
+"  '10  :  marks will be remembered for up to 10 previously edited files
+"  "100 :  will save up to 100 lines for each register
+"  :20  :  up to 20 lines of command-line history will be remembered
+"  %    :  saves and restores the buffer list
+"  n... :  where to save the viminfo files
+set viminfo='10,\"100,:20,%,n~/.vim/viminfo
 
-" ALE plugin configuration
+
+" Key Mappings ----------------------------------------------------------------
+" in command-line mode, fix <C-p> and <C-n> to filter history:
+cnoremap <C-p> Up
+cnoremap <C-n> Down
+
+" map hard-to-reach keys to simpler ones (useful for Swiss keyboard):
+" Note: these mappings are in addition - original keys are still valid
+noremap <silent> ' `
+noremap g0 ^
+noremap g$ g_
+noremap ö ;
+noremap é ,
+noremap <Space>g <C-]>
+
+" location-list:
+nnoremap <silent> [l :lprev<CR>
+nnoremap <silent> ]l :lnext<CR>
+nnoremap <silent> [L :lfirst<CR>
+nnoremap <silent> ]L :llast<CR>
+nnoremap <silent> <Space>l :lopen<CR>
+" quickfix-list:
+nnoremap <silent> [q :cprev<CR>
+nnoremap <silent> ]q :cnext<CR>
+nnoremap <silent> [Q :cfirst<CR>
+nnoremap <silent> ]Q :clast<CR>
+nnoremap <silent> <Space>q :copen<CR>
+" buffer-list
+nnoremap <silent> [b :bprev<CR>
+nnoremap <silent> ]b :bnext<CR>
+nnoremap <silent> [B :bfirst<CR>
+nnoremap <silent> ]B :blast<CR>
+nnoremap <silent> <Space>b :Buffers<CR>
+nnoremap <silent> <Space># :b#<CR>
+" tag-list:
+nnoremap <silent> [t :tprev<CR>
+nnoremap <silent> ]t :tnext<CR>
+nnoremap <silent> [T :tfirst<CR>
+nnoremap <silent> ]T :tlast<CR>
+nnoremap <silent> <Space>t :tselect<CR>
+
+
+" Abbreviations of Ex-Commands ------------------------------------------------
+" Function to map ex commands (works like cabbrev, but ignores words when
+" needed):
+function! SetupCommandAlias(input, output)
+  exec 'cabbrev <expr> '.a:input
+       \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:input.'")'
+       \ .'? ("'.a:output.'") : ("'.a:input.'"))'
+endfunction
+
+call SetupCommandAlias("tp", "tabprevious")
+call SetupCommandAlias("tn", "tabnext")
+call SetupCommandAlias("te", "tabedit")
+call SetupCommandAlias("tc", "tabclose")
+call SetupCommandAlias("vdiff", "vert diffsplit")
+
+
+" Highlighting ----------------------------------------------------------------
+" highlight search occurrences (<C-l> to clear):
+set hlsearch
+
+" highlight unprintable chars as error:
+hi clear SpecialKey
+hi link SpecialKey Error
+
+augroup highlilghting
+  autocmd!
+  " reserved word highlighting:
+  "autocmd Syntax * call matchadd('ErrorMsg', '\(ERROR\|FAILED\)')
+  "autocmd Syntax * call matchadd('DiffAdd', '\(PASSED\|OK\)')
+  autocmd Syntax * call matchadd('Todo', '\(TODO\|todo\|Todo\|tbd\|Tbd\)')
+augroup END
+
+
+" Spell Checking --------------------------------------------------------------
+set spell
+set spelllang=en_us
+" hi clear SpellBad
+" hi SpellBad cterm=underline,bold
+" hi clear SpellLocal
+" hi SpellLocal cterm=underline,bold
+" hi clear SpellCap
+" hi SpellCap cterm=underline
+augroup spellcheck
+  autocmd!
+  " disable spell check for log files
+  autocmd  BufReadPre *.log setlocal nospell
+augroup END
+
+
+" Plugins ---------------------------------------------------------------------
+" pre-condition: install minpac bare-metal as optional package
+packadd minpac
+call minpac#init()
+call minpac#add('k-takata/minpac', {'type': 'opt'})
+command! PackUpdate call minpac#update()
+command! PackClean call minpac#clean()
+
+" enable file type detection (with plugin and auto-indent):
+filetype plugin indent on
+
+" PACK FZF (export FZF_DEFAULT_COMMAND='rg --files' to use ripgrep search):
+call minpac#add('junegunn/fzf')
+call minpac#add('junegunn/fzf.vim')
+nnoremap <silent> <Space>f :<C-u>FZF<CR>
+let g:fzf_layout = { 'down': '~40%' }  " for a more natural feeling
+
+" PACK ALE Linter:
+call minpac#add('w0rp/ale')
 let g:ale_linters = {
 \   'javascript': ['standard'],
 \   'cpp': ['cpplint'],
-\   'python': ['flake8', 'btaflint'],
+\   'python': ['flake8', 'jedils'],
 \}
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_set_loclist = 0  " don't use location list (use [W,[w,]w,]W instead)
+let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
 let g:ale_fix_on_save = 1  " run fixer on save
-let g:ale_lint_on_enter = 0  " don't start linter on file open
+nmap <silent> [W <Plug>(ale_first)
+nmap <silent> [w <Plug>(ale_previous)
+nmap <silent> ]w <Plug>(ale_next)
+nmap <silent> ]W <Plug>(ale_last)
+" code completion/navigation/etc. via language-server (see :h ale):
+let g:ale_completion_enabled = 1
+let g:ale_completion_autoimport = 1
+autocmd VimEnter * set omnifunc=ale#completion#OmniFunc
+let g:ale_update_tagstack = 1
+let g:ale_lsp_suggestions = 1
+let g:ale_maximum_file_size = 500000
+noremap <Space>d :ALEGoToDefinition<CR>
+noremap <Space>t :ALEGoToTypeDefinition<CR>
+noremap <Space>r :ALEFindReferences<CR>
+noremap <Space>h :ALEHover<CR>
+call SetupCommandAlias("rename", "ALERename")
 
-" include project specific .vimrc file (DANGER: POTENTIAL SECURITY RISK!!)
-set secure exrc
+" PACK vim-grepper:
+call minpac#add('mhinz/vim-grepper')
+let g:grepper = {}
+let g:grepper.tools = ['rg', 'git', 'grep']
+" search for current word:
+nnoremap <silent> <Leader>* :Grepper -cword -noprompt<CR>
+" search for current selection:
+nmap <silent> gs <plug>(GrepperOperator)
+xmap <silent> gs <plug>(GrepperOperator)
+" replace original grep with GrepperRg:
+call SetupCommandAlias("grep", "GrepperRg")
 
-"-----------------------------------------------------------------------------
-" OBSOLETE: (delete in near future if no suspicious behavior detected)
-"-----------------------------------------------------------------------------
+" PACK vim-editorconfig - Respecting Project Conventions
+let g:editorconfig_verbose = 1
+call minpac#add('sgur/vim-editorconfig')
 
-" map F5 to the command ':make'
-"map <silent> <F5> :update<CR>:make<CR>
-"map <silent> <S-F5> :wall<CR>:make!<CR>:make show &<CR>
+" PACK vim-commentary - un-/commenting blocks of code
+call minpac#add('tpope/vim-commentary')
 
+" PACK vim-projectionist - Granular project configuration
+call minpac#add('tpope/vim-projectionist')
+function! s:loadProjections() abort
+  let l:linters = projectionist#query('linters')
+  let l:fixers = projectionist#query('fixers')
+  if len(l:linters) > 0
+    let b:ale_linters = {&filetype: l:linters[0][1]}
+  endif
+  if len(l:fixers) > 0
+    let b:ale_fixers = {&filetype: l:fixers[0][1]}
+  endif
+endfunction
+augroup configure_projects
+  autocmd!
+  autocmd User ProjectionistActivate call s:loadProjections()
+augroup END
 
-" enter the display line after searches. (This makes it *much* easier to see
-" the matched line.)
-" "
-" " More info: http://www.vim.org/tips/tip.php?tip_id=528
-" "
-"nnoremap n nzz
-"nnoremap N Nzz
-"nnoremap * *zz
-"nnoremap # #zz
-"nnoremap g* g*zz
-"nnoremap g# g#zz
+" PACK vim-sensible - Defaults everyone can agree on
+call minpac#add('tpope/vim-sensible')
 
+" PACK vim-fugitive - Awesome git wrapper
+call minpac#add('tpope/vim-fugitive')
 
-"set smartcase
+" PACK vim-signify - show, jump-to and stage partial git hunks (supports other vcs)
+call minpac#add('mhinz/vim-signify')
+nnoremap <silent> <leader>gd :SignifyDiff<cr>
+nnoremap <silent> <leader>gp :SignifyHunkDiff<cr>
+nnoremap <silent> <leader>gu :SignifyHunkUndo<cr>
 
-" Only do this part when compiled with support for autocommands
-"if has("autocmd")
-"  augroup redhat
-""    " In text files, always limit the width of text to 78 characters
-""    autocmd BufRead *.txt set tw=80
-"    " When editing a file, always jump to the last cursor position
-"    autocmd BufReadPost *
-"    \ if line("'\"") > 0 && line ("'\"") <= line("$") |
-"    \   exe "normal! g'\"" |
-"    \ endif
-"  augroup END
-"endif
+" PACK vim-taglist
+call minpac#add('vim-scripts/taglist.vim')
+let Tlist_Show_One_File = 1
+let Tlist_Close_On_Select = 1
+nnoremap <silent> <leader>t :TlistOpen<CR>
 
-"if has("cscope") && filereadable("/usr/bin/cscope")
-"   set csprg=/usr/bin/cscope
-"   set csto=0
-"   set cst
-"   set nocsverb
-"   " add any database in current directory
-"   if filereadable("cscope.out")
-"      cs add cscope.out
-"   " else add database pointed to by environment
-"   elseif $CSCOPE_DB != ""
-"      cs add $CSCOPE_DB
-"   endif
-"   set csverb
-"endif
+" PACK vim-obsession
+call minpac#add('tpope/vim-obsession')
 
-" Custom tabline which shows tab numbers:
-"if exists("+showtabline")
-"    function! MyTabLine()
-"        let s = ''
-"        let wn = ''
-"        let t = tabpagenr()
-"        let i = 1
-"        while i <= tabpagenr('$')
-"            let buflist = tabpagebuflist(i)
-"            let winnr = tabpagewinnr(i)
-"            let s .= '%' . i . 'T'
-"            let s .= (i == t ? '%1*' : '%2*')
-"            let s .= ' '
-"            let wn = tabpagewinnr(i,'$')
-"
-"            let s .= '%#TabNum#'
-"            let s .= i
-"            let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
-"            let bufnr = buflist[winnr - 1]
-"            let file = bufname(bufnr)
-"            let buftype = getbufvar(bufnr, 'buftype')
-"            if buftype == 'nofile'
-"                if file =~ '\/.'
-"                    let file = substitute(file, '.*\/\ze.', '', '')
-"                endif
-"            else
-"                let file = fnamemodify(file, ':p:t')
-"            endif
-"            if file == ''
-"                let file = '[No Name]'
-"            endif
-"            let s .= ' ' . file . ' '
-"            let i = i + 1
-"        endwhile
-"        let s .= '%T%#TabLineFill#%='
-"        let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
-"        return s
-"    endfunction
-"    set stal=2
-"    set tabline=%!MyTabLine()
-"    set showtabline=1
-"    highlight link TabNum Special
-"endif
+" PACK gruvbox - color scheme
+call minpac#add('morhetz/gruvbox')
+set background=dark  " dark or light
+let g:gruvbox_contrast_dark = 'hard'  " hard, medium, soft
+let g:gruvbox_contrast_light = 'hard'  " hard, medium, soft
+colorscheme gruvbox
 
+" fix spelling error highlighting for selected theme:
+hi clear SpellBad SpellLocal SpellCap
+hi SpellBad cterm=underline,bold
+hi SpellLocal cterm=underline,bold
+hi SpellCap cterm=underline
 
+" PACK vim-highlightedyank - mark what has just been yanked (visual feedback)
+call minpac#add('machakann/vim-highlightedyank')
 
+" PACK surround.vim - quoting/parenthesizing made simple
+call minpac#add('tpope/vim-surround')
 
-" Tabmerge -- Merge the windows in a tab with the current tab.
-"
-" Copyright July 17, 2007 Christian J. Robinson <infynity@onewest.net>
-"
-" Distributed under the terms of the Vim license.  See ":help license".
+" PACK vim-airline - more sophisticated status line
+call minpac#add('vim-airline/vim-airline')
+" call minpac#add('vim-airline/vim-airline-themes')
+let g:airline_section_a=''
+let g:airline_section_y=''
+autocmd VimEnter * let g:airline#extensions#ale#enabled = 1
 
-" Usage:
-"
-" :Tabmerge [tab number] [top|bottom|left|right]
-"
-" The tab number can be "$" for the last tab.  If the tab number isn't
-" specified the tab to the right of the current tab is merged.  If there
-" is no right tab, the left tab is merged.
-"
-" The location specifies where in the current tab to merge the windows.
-" Defaults to "top".
-"
-" Limitations:
-"
-" Vertical windows are merged as horizontal splits.  Doing otherwise would be
-" nearly impossible.
-
-"if v:version < 700
-"  echoerr "Tabmerge.vim requires at least Vim version 7"
-"  finish
-"endif
-"
-"command! -nargs=* Tabmerge call Tabmerge(<f-args>)
-"
-"function! Tabmerge(...)  " {{{1
-"  if a:0 > 2
-"    echohl ErrorMsg
-"    echo "Too many arguments"
-"    echohl None
-"    return
-"  elseif a:0 == 2
-"    let tabnr = a:1
-"    let where = a:2
-"  elseif a:0 == 1
-"    if a:1 =~ '^\d\+$' || a:1 == '$'
-"      let tabnr = a:1
-"    else
-"      let where = a:1
-"    endif
-"  endif
-"
-"  if !exists('l:where')
-"    let where = 'top'
-"  endif
-"
-"  if !exists('l:tabnr')
-"    if type(tabpagebuflist(tabpagenr() + 1)) == 3
-"      let tabnr = tabpagenr() + 1
-"    elseif type(tabpagebuflist(tabpagenr() - 1)) == 3
-"      let tabnr = tabpagenr() - 1
-"    else
-"      echohl ErrorMsg
-"      echo "Already only one tab"
-"      echohl None
-"      return
-"    endif
-"  endif
-"
-"  if tabnr == '$'
-"    let tabnr = tabpagenr(tabnr)
-"  else
-"    let tabnr = tabnr
-"  endif
-"
-"  let tabwindows = tabpagebuflist(tabnr)
-"
-"  if type(tabwindows) == 0 && tabwindows == 0
-"    echohl ErrorMsg
-"    echo "No such tab number: " . tabnr
-"    echohl None
-"    return
-"  elseif tabnr == tabpagenr()
-"    echohl ErrorMsg
-"    echo "Can't merge with the current tab"
-"    echohl None
-"    return
-"  endif
-"
-"  if where =~? '^t\(op\)\?$'
-"    let where = 'topleft'
-"  elseif where =~? '^b\(ot\(tom\)\?\)\?$'
-"    let where = 'botright'
-"  elseif where =~? '^l\(eft\)\?$'
-"    let where = 'leftabove vertical'
-"  elseif where =~? '^r\(ight\)\?$'
-"    let where = 'rightbelow vertical'
-"  else
-"    echohl ErrorMsg
-"    echo "Invalid location: " . a:2
-"    echohl None
-"    return
-"  endif
-"
-"  let save_switchbuf = &switchbuf
-"  let &switchbuf = ''
-"
-"  if where == 'top'
-"    let tabwindows = reverse(tabwindows)
-"  endif
-"
-"  for buf in tabwindows
-"    exe where . ' sbuffer ' . buf
-"  endfor
-"
-"  exe 'tabclose ' . tabnr
-"
-"  let &switchbuf = save_switchbuf
-"endfunction
-
-" vim:fdm=marker:fdc=2:fdl=1:
-
-
-"function DeleteHiddenBuffers()
-"  let tpbl=[]
-"  call map(range(1, tabpagenr('$')), 'extend(tpbl, tabpagebuflist(v:val))')
-"  for buf in filter(range(1, bufnr('$')), 'bufexists(v:val) && index(tpbl, v:val)==-1')
-"    silent execute 'bwipeout' buf
-"  endfor
-"endfunction
-
-
-" python specific mappings
-"noremap ) b?def <CR>w:nohl<CR>
-"noremap ( /def <CR>w:nohl<CR>
-"noremap } /^#* *$<CR>:nohl<CR>j^
-"noremap { 2k?^#* *$<CR>:nohl<CR>j^
+" PACK vim-rainbow - different colors for different pairs of brackets
+call minpac#add('frazrepo/vim-rainbow')
+nnoremap <silent> <leader>b :RainbowToggle<CR>

@@ -1,235 +1,442 @@
-My Personal Vim Cheat Sheet                           (for vimrc version 1.2.1)
-===============================================================================
+#            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#                    Version 2, December 2004
+#
+# Copyright (C) 2021 Martin Burri <info@burrima.ch>
+#
+# Everyone is permitted to copy and distribute verbatim or modified
+# copies of this license document, and changing it is allowed as long
+# as the name is changed.
+#
+#            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+#   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+#
+#  0. You just DO WHAT THE FUCK YOU WANT TO.
+#
 
-General Rules -----------------------------------------------------------------
-  * Action = Operator + Motion
-  * Operator doubling (e.g. dd) = apply to whole line
-  * Commands can be run n times: n<command>, e.g. 2x (note: don't count if you
-    can repeat - it's faster)
-  * Dot formula: one keystroke to move, one keystroke to execute
-  * Switching from insert to normal mode creates an undo junk (note: arrow keys
-    in insert mode are like <ESC><arrow>i)
-  * add "set -o vi" to ~/.bashrc to enable vi mode in bash
+My Personal Vim Cheat Sheet                            (for vimrc version 2.0.0)
+================================================================================
 
-Mode Switching ----------------------------------------------------------------
-  <ESC>             normal mode
-  <C-o>             insert normal mode (one shot normal mode from insert mode)
-  i,a               insert mode, append in insert mode
-  gi                short for '^i (go to last change and back to insert mode)
-  r,R               (single char, multi char) replace mode
-  v,V,<C-v>         visual mode, visual line mode, visual block mode
-  gv                reselect last selection (and enter visual mode)
-  :                 command-line mode (enter Ex commands)
-  q:                open the command-line window with history of Ex commands
-  <operator>        operator-peding mode
+This cheat sheet is to be used together with my personal vimrc file
+(see https://bitbucket.org/burrima/sysutil/src/master/README.md)
 
-Basic Commands ----------------------------------------------------------------
-  .                 repeat last change
+References ---------------------------------------------------------------------
+  [1] Practical Vim, Edit Text at the Speed of Thought, Drew Neil, 2012
+  [2] Modern Vim, Craft Your Development Environment with Vim 8 and Neovim,
+      Drew Neil, 2018
+
+How To Read This Cheat Sheet ---------------------------------------------------
+Note: the terminology used is aligned with [1] and [2].
+  xy                key x followed by key y
+  A,B,C or D        Command A, command B, command C=D explained
+  <Esc>,<CR>        Escape key, Return key, etc.
+  <Leader>          <Leader> key (currently mapped to ',')
+  <C-x>             while holding <Ctrl> key, press x key
+  <C-x>{motion}     <C-x>, then release keys and press any motion key
+  :{command}        Ex command = : key followed by command and implicit <CR>
+  :help {term}      get help for any search term
+  "{register}       "x = " key followed by register name, see section Registers
+  [count]x          optional number [count] before pressing x
+  $ <command>       issue command on bash shell (implicit <CR> to start command)
+
+The Vim Way --------------------------------------------------------------------
+See [1], Tip 1-11:
+  * Don't repeat yourself, use '.' (dot) command to repeat the last change
+  * Don't count if you can repeat (e.g. use 'x.....' instead of '6x')
+  * Make changes repeatable (e.g. use 's' instead of 'xi')
+  * Act, react, reverse: Make change, repeat it, reverse if done too often
+  * Make reasonable undo chunks (chunk = from normal to insert mode and back)
+    (note: arrow keys act like '<Esc>hi', breaking the chunk - use hjkl keys)
+  * Dot formula: The ideal: One keystroke to move, another to execute
+
+Motions ------------------------------------------------------------------------
+To move around in Normal and visual modes and to combine with Operator Commands
+  h,j,k,l           left, down, up, right
+  w,b,e,W,B,E       to next, prev, end word or WORD (=sequence of no-space)
+  0,$               to start, end of line
+  g0,g$             to first, last non-blank char of line (alias for ^ and g_)
+  f{char},t{char}   to occurrence of char in line (incl/excl char)
+  F{char},T{char}   to occurrence of char in line (incl/excl char) backwards
+  ; or ö            repeat last f,t,F or T
+  , or é            repeat last f,t,F or T in opposite direction
+  gg,G              to top, bottom of file
+  H,L               to top, bottom of screen
+  {count}|          to screen column {count} in the current line
+
+Text Objects -------------------------------------------------------------------
+  a',a"             a pair of 'single quotes', "double quotes"
+  a) or ab          a pair of (parentheses)
+  a} or aB          a pair of {braces}
+  a],a>             a pair of [brackets], <angle brackets>
+  at                a pair of <xml>tags</xml>
+  aw,aW             current word/WORD plus one space (a word)
+  as,ap             current sentence, paragraph plus one space
+
+  Notes:
+    * each 'a' has its 'i' counterpart, meaning 'inside' or 'inner' (no space)
+    * Text objects are not motions themselves (not usable for navigation)
+    * use Text Objects together with Operator Commands or in Visual mode
+
+Navigation, Marks & Jumps ------------------------------------------------------
+  zz,zt,zb          scroll cursor position to center, top, bottom
+  <C-f>,<C-d>,<C-e> scroll down full page, half page, one line
+  <C-b>,<C-u>,<C-y> scroll up full page, half page, one line
+
+  m{mark},'{mark}   set mark, jump to mark (a-z=local, A-Z=global mark)
+
+  g;,g,             jump to previous, next change (traverse change list)
+  gi                short for '^i (jump to last change and go to Insert mode)
+  <C-o>,<C-i>       jump back, forward (traverse jump list)
+  %                 jump between opening and closing (), {}, [] and keywords
+  (,),{,}           jump to next, previous sentence, paragraph
+  H,M,L             jump to top, middle, bottom of screen
+
+  Automatic Marks (readonly):
+  ''                position before the last jump within current file
+  '.                location of last change
+  '^                location of last insertion
+  '[,']             start, end of last yank or change
+  '<,'>             start, end of (current or) last visual selection
+
+  Notes:
+    * motions move around within a file, jumps can move between files
+    * set a global mark before going code diving (easy return to start)
+    * vim maintains a change list for each individual buffer (see ":changes")
+    * vim maintains a jump list for each individual window (see ":jumps")
+
+Modes --------------------------------------------------------------------------
+vim has different modes and each mode has its own set of commands:
+ * Normal mode - to navigate, think, prepare etc. - used most often
+ * Insert mode - type actual text
+ * Visual mode - select characters, lines or rectangular blocks
+ * Replace mode - replace single char or multiple characters
+ * Command-Line mode - to enter Ex commands
+ * Operator-Pending mode - implicit mode between Operator and Motion (see below)
+
+Normal Mode Commands -----------------------------------------------------------
+Basic Commands
+  i,a,I,A           insert/append to cursor or start/end of line in Insert Mode
+  r,R               switch to (single char, multi char) Replace mode
+  v,V,<C-v>         switch to Visual character, line or block mode
+  gv                reselect last selection (and enter Visual mode)
+  :                 switch to Command-Line mode (enter Ex commands)
+  q:,q/,q?          show history of Ex commands, fw-, bw-searches to edit
   u,<C-r>           undo, redo
-  <C-l>             clear screen (incl. :nohl as specified in .vimrc)
-  x,xp              delete character at cursor position, swap 2 chars
-  {register}p       paste from register
-  <C-a>, <C-x>      addition, substraction of numbers
+  <C-l>             clear screen (unmark matches too)
+  x,"{register}x    cut character to unnamed or specific register
+  p,"{register}p    put = paste from unnamed register or specific register
+  gp,"{register}gp  same as 'p' but place cursor at end of inserted region
+  [count]<C-a>      add count to digit below cursor or to the right
+  [count]<C-x>      subtract count from digit below cursor or to the right
+  .                 repeat last change (very powerful command! see ":h .")
+  <C-o>             Insert Normal mode (one shot Normal mode from Insert mode)
+  @:                repeat last Ex cmd (useful when [range] of Ex is selection)
+  @@                repeat last @ operation (macro or Ex cmd)
 
-Operator Commands -------------------------------------------------------------
-  >,<,=             shift right, left, autoindent
-  {register}c       (move to register and) change
-  {register}d       (move to register and) delete
+  Notes:
+    * Switching from insert to normal mode creates an undo junk (note: arrow
+      keys in insert mode are like <Esc><arrow>i)
+    * use xp to swap 2 characters
+    * most commands can be run n times: [count]<command>, e.g. 2x
+
+Operator Commands (combine with Motion, search or use in Visual Mode)
+  <operator>        switch to Operator-Pending mode (waiting for Motion)
+  >,<,=             shift right, left, auto-indent
+  y,"{register}y    yank (i.e. copy) to unnamed or specific register
+  c,"{register}c    change (with prior save to unnamed or specific register)
+  d,"{register}d    cut to unnamed or specific register (mnemonic: delete)
   g~,gu,gU          swap case, make lowercase, make uppercase
-  {register}y       yank to register
   gq                reformat paragraph
 
-Compound Commands -------------------------------------------------------------
+  Notes:
+    * Action = Operator + Motion (operator commands are applied to a marked
+      range or require a motion) - powerful combinations!
+    * power move: use search as motion, e.g. "d/{search-term}<CR>"
+    * explicit copy-paste is called yank-paste in vim
+    * operator doubling (e.g. dd) = apply to whole line
+
+Compound Commands
   A  = $a           append at end of line
   C  = c$           change till end of line
   I  = ^i           insert at the beginning of line
-  J  = A<DEL><ESC>  join 2 lines (append lower line to the current one)
+  J  = A<DEL><Esc>  join 2 lines (append lower line to the current one)
   o  = A<CR>        start new line in insert mode
   O  = ko           start new line in insert mode above current line
   P  = hp           paste before current position
+  gP                same as 'P' but place cursor after inserted text
   S  = ^C           change from first non-empty char to end of line
   s  = cl           change char
-  X  = hx           delete char left
-  Y  = yy           yank line to register
+  X  = hx           cut char left
+  Y  = yy           yank line
   ~  = g~l          change case of character
 
-Visual Mode Commands ----------------------------------------------------------
+Visual Mode Commands -----------------------------------------------------------
+  <Esc>             switch to Normal mode
+  v,V,<C-v>         change to Visual character, line or block mode
   ~                 change case of selection
-  u,U               change selection to lower case, uper case
+  u,U               change selection to lower case, upper case
+  p,"{register}p    replace selection with unnamed, specific register content
+  c,d,y             change, delete, yank selection ("{register}<cmd> possible)
+  o                 go to other end of highlighted text
 
-  Note: above normal mode commands apply to the selection when in visual mode
+  Notes:
+    * when using dot command to repeat visual mode command, it acts on the same
+      range of text as was marked before, thus:
+    * prefer operators over visual commands where possible
+    * use visual block mode to edit tabular data, also to insert, replace or
+      append over several lines (i.e. "columns" of text),
+      even to append to end of line over ragged text (see [1], Tip 24-26)
+      (alternatively use ":normal A;" over selected range to append ';')
 
-Insert Mode Commands ----------------------------------------------------------
-  <C-h>,<C-w>,<C-u> delete back one char (=Backspace), word, to start of line
-  <C-r>{register}   paste content of register (skip the "-key)
+Insert Mode Commands -----------------------------------------------------------
+  <scC>             switch to Normal mode
+  <C-o>             switch to Insert Normal mode (1-shot Normal mode command)
+  <backspace>       delete back one letter
+  <C-w>             delete back one word (works in ex and bash as well)
+  <C-u>             delete back to start of line (works in ex and bash as well)
+  <C-r>{register}   paste content of register
 
-Command-line Mode Commands ----------------------------------------------------
+  Notes:
+    * <C-w> becomes efficient when feeling a typo at the beginning of the word
+      while typing fluently
+    * <C-o> becomes handy to center screen while typing: "<C-o>zz" vs "<Esc>zza"
+
+Command-line Mode Commands -----------------------------------------------------
+  <Esc>             switch to Normal mode
   <C-r>{register}   paste content of register into cmd line
-  <C-r><C-w>        copy-paste word unter cursor into cmd line
+  <C-r><C-w>        copy-paste word under cursor into cmd line
+  <C-r><C-a>        copy-paste WORD under cursor into cmd line
 
-Motions -----------------------------------------------------------------------
-  h,j,k,l           left, down, up, right
-  w,b,e / W,B,E     to next, prev, end word / to next, prev, end WORD
-  0,$,^,g_          to start, end, first, last non-blank char of line
-  f{char},t{char}   to [count]'th occurence of char (incl/excl char)
-  F{char},T{char}   to [count]'th occurence of char (incl/excl char) backwards
-  ; ,               repeat latest f,t,F or T (normal, opposite direction)
-  gg,G              to top, bottom of file
-  H,L               to top, bottom of screen
-  [count]|          to screen column [count] in the current line
+  :n                jump to line number n
+  :cd               change working directory
+  :reg[register]    show contents of specific or common registers
+  :set list         show invisible characters (newline etc)
+  :sort             :sort!, :sort i, :sort u (ascending, ignore case, rem dup)
+  :abbr X Y         define abbreviation X for term Y
+  :[range]t {addr}  (short for :copy) copy [range] of lines to {address}
+  :[range]m {addr}  (short for :move) move [range] of lines to {address}
 
-Delimited and Bounded Text Objects (= special Motions) ------------------------
-  a) or ab          a pair of (pharanteses)
-  a} or aB          a pair of {braces}
-  a],a>,a',a"       a pair of [braces], <braces>, 'single quotes', "quotes"
-  at                a pair of <xml>tags</xml>
-  aw,aW             current word/WORD plus one space (a word)
-  as,ap             current sentence plus one space / paragrap plus one line
+  :!{cmd}           execute {cmd} with the shell
+  :[range]!{filter} filter [range] through external program {filter}
+  :[range]write !{cmd}  execute {cmd} in the shell with [range] lines as stdin
+  :read !{cmd}      execute {cmd} in the shell and put its stdout below cursor
 
-  Notes:
-    * each 'a' has its 'i' counterpart, meaning 'inside'
-    * use Text Objects together with Operator Commands or in visual mode
+  :args [files]     show/edit argument list (use * or ** (=incl. subdirs))
+  :argdo {cmd}      repeat cmd for each buffer in the argument list
+                    (e.g. useful for ":argdo normal {cmds}")
 
-Navigation, Marks & Jumps -----------------------------------------------------
-  zz,zt,zb          scroll cursor to center, top, bottom
-  <C-f>,<C-d>,<C-e> scroll down full page, half page, one line
-  <C-b>,<C-u>,<C-y> scroll up full page, half page, one line
-  ma,`a             set mark a, go to mark a (a=local, A=global mark)
-  <C-o>,<C-i>       jump back, forward to previous, next spot (see :jumps)
-  %                 jump between opening and closing (), {} and []
+  :[range]normal {cmds}
+                    execute Normal mode {cmds} on each specified line. Also
+                    useful in combination with macros: ":[range]normal @a"
 
-  Automatic Marks (readonly)
-  `'                position before the last jump within current file
-  `.                location of last change
-  `^                location of last insertion
-  `[,`]             start, end of last yank
-  `<,`>             start, end of (current or) last visual selection
+  Ranges:
+    :{address}      single line address: n=line-number, .=current-line,
+                    'm=line-containing-mark-m ('<,'>=start,end-of-selection),
+                    /{term}/=search-term, 1=first-line-of-file,
+                    0=virtual-line-above-1, $=last-line-of-file
+    :{address}+n    modify an address, using an offset of lines
+    :{start},{end}  start and end addresses
+    :%              whole file (short for :1,$)
 
-  Note: the `-key is hard to reach on keyboard, so it's mapped to ' in .vimrc
+  Notes:  See also [1], p. 51ff
+    *  Vim has Ex cmds for everything, see ":h ex-cmd-index" (e.g. copy, yank)
+    *  Ex cmds can be applied to many lines at once (sometimes more powerful
+       than Normal mode cmds). Ex cmds strike far and wide.
+    * :t. and :m. are like yyp or ddp without overwriting the default register
+    * q: to open command history to re-issue (edited) command by <CR>
+    * in Ex cmds: % = "current file path", %:h = "% without file name
 
-Macros ------------------------------------------------------------------------
-  q{register}       record macro to register
-  @{register},@@    replay macro from register, replay last macro
-  :normal @a        execute macro in register a once for each line
-  :argdo normal @a  repeat macro in register a in all buffers of argument list
-  qA                append to macro in register a
+Patterns, Search & Replace -----------------------------------------------------
+In Normal mode:
+  *,#               go to the next, previous occurrence of word under cursor
+  n,N               find next, find previous occurrence
+  /{pattern}        open Command line to forward-search the {pattern}
+  ?{pattern}        open Command line to backward-search the {pattern}
+  q/,q?             open buffer of search history to edit and re-issue with <CR>
 
-  Notes:
-    * Macros use the same registers as yank etc., so they are editable
-    * Macro stops when motion fails
-    * Run macro in 'parallel' with the :normal command (continues on next
-      line when it fails on current line)
-
-Registers ---------------------------------------------------------------------
-  "a,"A             register [a-z], global register [A-Z]
-  "+,"*             the X11 clipboard, X11 primary (=middle mouse)
-  ".                last inserted text
-  "/                last search pattern
-  "0                yank register (contains last yank)
-  ""                unnamed register (contains last yank, delete, change)
-  "_                blackhole register (similar to NULL device)
-
-Search & Replace --------------------------------------------------------------
-  /,?               find forward/backward
-  n,N               find next, find previous
-  *,#               go to the next, previous occurrence of current word
-  q/,q?             open the command-line window with history of searches
-  :s///gcen         substitute (g=whole line, c=ask, e=ignore errors, n=count)
-  :&&               repeat last substitute command (with flags from previous)
-  :vim[grep] /p/ f  search pattern p in files f and put result into quickfix list
+  :[range]global/{pattern}/[cmd]
+                    execute Ex [cmd] on all specified lines where {pattern}
+                    matches
+  :[range]substitute/{pattern}/{string}/[flags]
+                    replace occurrences of {pattern} with {string} on each
+                    specified line with [flags]: g=whole line, c=ask, n=count
 
   Notes:
-    * use / and ? together with Operator Commands and feel the power
-    * use /.../e and ?...?e to set the cursor to the end of the match
-    * use \c and \C to force case in-/sensitive search
-    * use \v (very magic search) and \V (verbatim search)
+    * use Operator Commands together with / and ? and feel the power
+    * use /{pattern}/e and ?{pattern}?e to set the cursor to the end of match
+    * use \c anywhere in pattern to force case insensitive search
+    * use \v (very magic, with regex) and \V (verbatim, plain-text) in pattern
     * use \zs and \ze (zoom start/end) to mark only part of the search term
     * decouple search (/\v...) and replace(:s//.../g) for cleaner workflow
-    * use ## as filename to use argument list for vimgrep
+    * see ":h pattern-searches" for full explanation of this topic
+    * Manual search/replace: Use '*' to search, 'cw' to replace, 'n.' to repeat
+      (rationale: decide for each occurrence to replace or not)
 
-General Ex Commands -----------------------------------------------------------
-  :cd               change working directory
-  :reg a            show contents of register a
-  :set list         show invisible characters (newline etc)
-  :F                :find but with tab-complete (requires find-complete plugin)
-  :N                go to line N (N is a number)
-  :sort             :sort!, :sort i, :sort u (ascending, ignore case, rem dup)
-  :args [<files>]   show/edit argument list (use * or ** (=incl.  subdirs))
-  :argdo <cmd>      repeat cmd for each buffer in the argument list
-  :g[lobal]/{p}/[c] execute cmd c on [range] where pattern p matches
-  :!{filter}        filter [range] through external program {filter}
-                    if no range is given, just the program {filter} is executed
-  :write !{cmd}     execute {cmd} in the shell with [range] lines as stdin
-  :read !{cmd}      execute {cmd} in the shell and put its stdout below cursor
-  :abbr X Y         define abbreviation X for term Y
-  :mksession        creates a new session (./Session.vim, load with $vim -S)
+Registers ----------------------------------------------------------------------
+  ""                unnamed register
+  "a,"A             named register: local [a-z], global [A-Z]
+  "0                yank register (contains last yank)
+  "_                blackhole register (similar to NULL device)
+  "+,"*             system clipboard (ctrl-c), X11 primary (middle mouse button)
+  ".                last inserted text
+  "/                last search pattern
+  "=                expression register (see ":h quote=")
+  :reg a            show content of register a
 
   Notes:
-    * :[range]<cmd>, %=whole file, '<,'>=selection, 5,10=lines 5 to 10,
-                     .=current line, .,.+5=current and next 5 lines
-    * use 'set path+=**' to make :F work properly (done in vimrc)
+    * all delete or change operations store to unnamed register by default
+    * use "_ or "0 (or named registers) when combining yank and change/delete
+    * use ":set paste"/":set nopaste" on problems pasting from system clipboard
 
-Tabs, Windows  ----------------------------------------------------------------
-  :tabedit FILE     open FILE in new tab (:te as abbrev in vimrc)
-  gt,gT,Ngt         next, previous, n-th tab
-  :tabm i           move current tab to position i
-  :split            split window
-  :vs               vertical split window
-  <C-w>x            navigate to window x=h,j,k,l (after :split or :vs)
+Windows, Tabs  -----------------------------------------------------------------
+  <C-w>s or :split  split window
+  <C-w>v or :vs     vertical split window
+  <C-w>x            navigate to window x=h,j,k,l
+  <C-w>X            move window X=H,J,K,L
+  <C-w>=            make all windows same size (auto-adjust)
   <C-w>+,<C-w->-    increase, decrease current window size
+  <C-w>|,<C-w>_     maximize current window in width, height (<C-w>= to restore)
   <C-w>gf           open the file whose name is under the cursor in a new tab
   :q[uit],qa[ll]    quit the current, all window(s) (use :q! to force unsaved)
-
-Buffers -----------------------------------------------------------------------
-  :ls               show buffer list
-  :b[uffer] N       show buffer n in current window
-  :b <Tab>          tab-complete buffer names, open with <CR>
-  :b# or <C-^>      switch to previous buffer
-  :bn[ext],:bp[rev] next, previous buffer
-  :bd[elete]        close current buffer
-  :set hidden       allow to leave modified (unsaved) buffers (part of vimrc)
-  :up[date]         update buffer to file (write if changed, otherwise not)
-  :w[rite] {FILE}   write buffer to current or new FILE
-  :wa[ll]           write all changed buffers to file
-  gf                open the file whose name is under the cursor
-
-Quickfix List / Location Lists ------------------------------------------------
-  :cope[n]          open quickfix list in new buffer
-  :cn[ext],:cp[rev] jump to next, previous item in quickfix list
-  :cfirst,:clast    jump to first, last item in quickfix list
-  :cnfile,:cpfile   jump to first item in next file, last item in previous file
-  :cc N             jump to n'th item
-  :col[der]         load older quickfix list
-  :cnew[er]         load newer quickfix list
-  [q,]q,[Q,]Q       jump to next, previous, first, last item in quickfix list
+  :te [file]        open [file] in new tab (te=tabedit in vimrc)
+  :tc               close current tab (incl. all split windows) (tc=tabclose)
+  gt,gT,{n}gt       next, previous, n-th tab
+  :tabm i           move current tab to position i
+  <C-w>T            move current split to a separate tab
 
   Notes:
-    * There exist equivalent commands for location lists - with l instead of c
-    * Above normal mode jump commands are defined in .vimrc
+    * Opening a file is easy with FZF plugin: Press <C-p>, then search, select
+      with <C-p>,<C-n> (or Up,Down) and press <CR>, <C-v>, <C-s> or <C-t> to
+      open in active window, new vertical split, new horizontal split or new tab
+    * Prefer splits over tabs (tabs are more like "virtual desktops")
 
-Autocompletion ----------------------------------------------------------------
+Buffers ------------------------------------------------------------------------
+  <Space>b          show buffer list using FZF plugin (use fuzzy search or
+                    buffer number) to load buffer
+  <Space>#          switch back to previous buffer (=alternate buffer) in window
+  [B,]B,[b,]b       load first, last, prev, next buffer to active window
+                    (short for :bfirst, :blast, :bprev, :bnext)
+  :bd[elete]        close current buffer (:q closes window, but not buffer)
+  :up[date]         update buffer to file (write if changed, otherwise not)
+  :w[rite] [file]   write buffer to current or new [file]
+  :wa[ll]           write all changed buffers to file
+  :!mkdir -p %:h    create directory for current file (if not existing yet)
+
+Quickfix List / Location Lists -------------------------------------------------
+  <Space>q,<Space>l open Quickfix-, Location-list (short for :copen,:lopen)
+  [Q,]Q,[q,]q       jump to next, previous, first, last item in quickfix list
+                    (short for :cfirst, :clast, :cprev, :cnext)
+  [L,]L,[l,]l       jump to next, previous, first, last item in location list
+                    (short for :lfirst, :llast, :lprev, :lnext)
+  :cnfile,:lnfile   jump to first item in next file
+  :cpfile,:lpfile   jump to last item in previous file
+  :colder,:lolder   load older Quickfix-, Location-list
+  :cnewer,:lnewer   load newer Quickfix-, Location-list
+
+  Notes:
+    * Quickfix list is global and unique, Location list is per window
+
+Macros -------------------------------------------------------------------------
+  q{register}       record macro to register a-z (only small letters!)
+  [n]@{regster}     replay macro from register n times (stops when motion fails)
+  [n]@@             replay last macro n times
+  qA                append to macro in register a
+  :[argdo] normal @a  run macro once on each line [in each file of the arg list]
+
+  Notes:
+    * Ideal for repeating changes on similar lines, paragraphs or files
+    * Golden rule: when recording, ensure that every command is repeatable
+    * Normalize start position, use jumps, text objects (full vim arsenal)
+    * Macros use normal registers, so you can  paste-edit-yank register
+    * Use of iterator possible via expression register, e.g:
+      :let i=1<CR> qa I<C-r>=i<CR>)<CR><Esc> :let i+=1<CR> q
+
+Autocompletion -----------------------------------------------------------------
+Currently done with the ALE plugin and a language-server running in the back.
   <C-n>,<C-p>       generic keywords
+  <C-x><C-o>        omni-completion (via ALE language-server backend)
   <C-x><C-n>        current buffer keywords
   <C-x><C-i>        included files keywords
-  <C-x><C-]>        ctags file keywords
+  <C-x><C-]>        tags file keywords
   <C-x><C-k>        dictionary lookup
   <C-x><C-l>        whole line completion
-  <C-x><C-f>        filename completion
-  <C-x><C-o>        omni-completion
+  <C-x><C-f>        file name completion
 
   Pop-up Menu Commands:
-  <C-n>,<C-p>       use the next, previous match
-  <Up>,<Down>       select the previous, next match
-  <C-y>             accept the currently selected match (yes)
-  <C-e>             revert the originally typed text (exit from autocompletion)
-  <C-l>             add one character from current match
+  <C-n>,<C-p>       use the next, previous match (arrow keys work as well)
+  <C-l>             add one character from first match in list
+  <C-w>             delete (selected) word (generic command useful everywhere)
+  <C-e>             revert the originally typed text (exit from auto-completion)
 
-Spell Checking ---------------------------------------------------------------
+Spell Checking -----------------------------------------------------------------
   :set spellfile=   name of word list where new words are added (*.{enc}.add)
-  :set spell        enable spell checking
+  :set spell[!]     enable [or disable] spell checking
 
   [s,]s             jump to previous, next misspelled word
-  zg N              add word under cursor as good word to first/n-th spellfile
-  zw N              same as zg but makr word as bad
-  zug,zug           undo last zg, zw command
   z=                for the word under/after cursor suggest correct word
+  zg N              add word under cursor as good word to first/n-th spellfile
+  zw N              same as zg but mark word as bad
+  zug,zuw           undo last zg, zw command
+
+Code Navigation ----------------------------------------------------------------
+  [T,]T,[t,]t       jump to first, last, next, previous item in tag match list
+  <Space>t          promt user to choose an item (short for :tselect)
+
+Plugins ------------------------------------------------------------------------
+  * Add/remove entry in .vimrc, then restart vim and type :PackUpdate/:PackClean
+  * Type ":h {plugin-name}" to get help
+
+Installed plugins, and their specific shortcuts (see vimrc file):
+  * minpac: Manage plugins (see [2], p. 18).
+     :PackUpdate      install newly added plugin (in vimrc)
+     :PackClean       uninstall newly removed plugin (from vimrc)
+
+  * commentary: Un-/Commenting blocks of code in different languages
+      gc{motion}      toggle code commenting (gcc =short for gcgc, current line)
+
+  * FZF: Finding files using fuzzy path matching (see [2], p. 23)
+      <Space>f        launch fzf tool
+      <C-j>,<C-k>     navigate up, down in file list (same as arrow keys)
+      <C-v>,<C-t>     open selected in separate vertical split, separate tab
+      <C-c>           close the fzf tool
+
+  * ALE: Linting (see [2], p. 50).
+      [W,]W,[w,]w     go to first, last, previous, next warning
+      <Space>d        jump to definition (requires language server)
+      <Space>r        find references (requires language server)
+      <Space>h        get mouse hover info (requires language server)
+      :rename         refactor (i.e. rename a symbol) (requires language server)
+
+  * grepper: Searching files with grep-alikes (see [2], p. 56)
+      <Leader>*,gs    search for the current word, the current selection
+      :grep <term>    search with ripgrep for the term (alias in vimrc)
+      :Grepper<CR>    enter Grepper Prompt (use <Tab> to select grep tool)
+
+  * obsession: Continuously updated session-files
+      :Obsess [path]  start recording a session file to optional file/directory
+      :Obsess!        stop recording session and delete Session.vim file
+      $ vim -S [path] start vim and load a session
+
+  * signify: Show changes in current buffer (works with different vcs)
+      [C,[c,]c,]C     jump to the first, prev, next, last hunk
+      <Leader>gd      show diff of current buffer
+      <Leader>gp      show diff of current hunk
+      <Leader>gu      undo current hunk (use 'u' to undo if not satisfied)
+
+  * taglist.vim: Show tags of a buffer for easy navigation
+      <Leader>t       open taglist to select a tag
+
+  * surround: "Quoting/parenthesizing" made simple
+      ys{textobj}{s}  surround text object with surrounding {s}
+      S{s}            surround selection with surrounding {s}
+      cs{old}{new}    change surrounding {old} to {new}
+      ds{s}           delete surrounding {s}
+    {s} can be ",',(,{,[,<,t{tagname} etc. (use closing bracket to omit space)
+
+  * rainbow: Different colors for different pairs of brackets
+      <leader>b       toggle rainbow on/off (off by default)
+
+  * sensible: Defaults everyone can agree on (makes vimrc slimmer)
+  * gruvbox: Color scheme
+  * airline: More sophisticated status line
+  * editorconfig: Respecting Project Conventions (see [2], p. 112)
+  * projectionist: Granular project configuration (see [2], p. 117)

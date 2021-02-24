@@ -1,0 +1,18 @@
+" Load vimrc from sysutil -----------------------------------------------------
+if !empty(glob("~/sysutil/vimrc"))
+  source ~/sysutil/vimrc
+endif
+
+" Color settings --------------------------------------------------------------
+" Use these settings to overwrite the colorscheme settings:
+"set background=light  " dark or light
+"colorscheme gruvbox
+
+" Use this to increase contrast on low-contrast screens:
+"hi Normal guibg=Black ctermbg=Black
+
+" Font settings ---------------------------------------------------------------
+" Use powerline fonts. This requires the patched fonts to be installed on the
+" end-system (the system rendering the Vim screen). On Ubuntu, install the
+" fonts-powerline package.
+"let g:airline_powerline_fonts = 1

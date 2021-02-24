@@ -1,0 +1,31 @@
+" Load vimrc from sysutil -----------------------------------------------------
+if !empty(glob("~/sysutil/vimrc"))
+  source ~/sysutil/vimrc
+endif
+
+" Color settings --------------------------------------------------------------
+" Use these settings to overwrite the colorscheme settings:
+"set background=light  " dark or light
+"colorscheme gruvbox
+
+" Use this to increase contrast on low-contrast screens:
+" hi Normal guibg=Black ctermbg=Black
+
+" Font settings ---------------------------------------------------------------
+" Use powerline fonts. This requires the patched powerline-fonts to be installed
+" on the end-system (the system that displays the screen). On Ubuntu, install
+" the fonts-powerline package:
+let g:airline_powerline_fonts = 1
+
+" Emojis for sign column ------------------------------------------------------
+call minpac#add('junegunn/vim-emoji')
+augroup emoji
+    autocmd!
+    autocmd VimEnter *
+            \ let g:ale_sign_error = emoji#for('poop') |
+            \ let g:ale_sign_warning = emoji#for('poop') |
+            \ let g:signify_sign_add = emoji#for('small_blue_diamond') |
+            \ let g:signify_sign_delete = emoji#for('small_red_triangle') |
+            \ let g:signify_sign_delete_first_line = emoji#for('small_red_triangle') |
+            \ let g:signify_sign_change = emoji#for('small_orange_diamond')
+augroup END
