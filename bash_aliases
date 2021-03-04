@@ -1,4 +1,6 @@
 
+alias ssh='ssh -X'
+
 # git shortcuts
 alias gits='git status'
 alias gitd='git diff'
