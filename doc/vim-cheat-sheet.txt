@@ -1,6 +1,5 @@
-My Personal Vim Cheat Sheet
-===========================
-Bur, Oct 2014
+My Personal Vim Cheat Sheet                           (for vimrc version 1.2.1)
+===============================================================================
 
 General Rules -----------------------------------------------------------------
   * Action = Operator + Motion
@@ -76,7 +75,7 @@ Motions -----------------------------------------------------------------------
   F{char},T{char}   to [count]'th occurence of char (incl/excl char) backwards
   ; ,               repeat latest f,t,F or T (normal, opposite direction)
   gg,G              to top, bottom of file
-  H,L               to top, bottom of screen 
+  H,L               to top, bottom of screen
   [count]|          to screen column [count] in the current line
 
 Delimited and Bounded Text Objects (= special Motions) ------------------------
@@ -165,7 +164,7 @@ General Ex Commands -----------------------------------------------------------
   :abbr X Y         define abbreviation X for term Y
   :mksession        creates a new session (./Session.vim, load with $vim -S)
 
-  Notes: 
+  Notes:
     * :[range]<cmd>, %=whole file, '<,'>=selection, 5,10=lines 5 to 10,
                      .=current line, .,.+5=current and next 5 lines
     * use 'set path+=**' to make :F work properly (done in vimrc)
@@ -183,7 +182,7 @@ Tabs, Windows  ----------------------------------------------------------------
 
 Buffers -----------------------------------------------------------------------
   :ls               show buffer list
-  :b[uffer] N       show buffer n in current window 
+  :b[uffer] N       show buffer n in current window
   :b <Tab>          tab-complete buffer names, open with <CR>
   :b# or <C-^>      switch to previous buffer
   :bn[ext],:bp[rev] next, previous buffer
@@ -234,4 +233,3 @@ Spell Checking ---------------------------------------------------------------
   zw N              same as zg but makr word as bad
   zug,zug           undo last zg, zw command
   z=                for the word under/after cursor suggest correct word
-

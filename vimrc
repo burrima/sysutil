@@ -1,4 +1,4 @@
-" burrima.ch own .vimrc file
+" burrima.ch own .vimrc file                                      Version 1.2.1
 "------------------------------------------------------------------------------
 
 set encoding=utf-8  " The encoding displayed.
