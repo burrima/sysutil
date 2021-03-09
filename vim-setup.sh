@@ -44,7 +44,8 @@ fi
 echo ""
 echo "Vim will now open and install/update its plugins."
 echo "Please wait until it is finished and then quit Vim manually."
-echo "Press <enter> to proceed:"
+echo "Note: please ignore messages about missing plugins when vim starts..."
+echo "Press <Enter> to continue:"
 read
 vim -c PackUpdate  # exit vim when done
 cd "$olddir"

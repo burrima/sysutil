@@ -13,7 +13,7 @@
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 #
 
-My Personal Vim Cheat Sheet                            (for vimrc version 2.0.0)
+My Personal Vim Cheat Sheet                            (for vimrc version 2.0.1)
 ================================================================================
 
 This cheat sheet is to be used together with my personal vimrc file

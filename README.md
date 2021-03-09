@@ -69,7 +69,7 @@ Note: If you are a work-mate of me, working with the BTAF framework, you have to
 issue the following additional commands:
 ```
 $ mkdir -p ~/.vim/pack/btaflint/start/btaflint/plugin/
-$ ln -s ~/testAutomation/sys/btaflint.vim .vim/pack/btaflint/start/btaflint/plugin/btaflint.vim
+$ ln -s /opt/btaflint.vim ~/.vim/pack/btaflint/start/btaflint/plugin/btaflint.vim
 ```
 This will install a small local plugin as an extension to ALE. It is needed to
 make the `btaflint` extra linting script active.
@@ -191,6 +191,10 @@ Uninstalling is as easy as removing the path again.
 
 
 ### Vimrc revision history
+
+#### Version 2.0.1
+Minor improvement in the installation process. Use global btaflint script
+instead of local one to make it independent of currently checkout out branch.
 
 #### Version 2.0.0
 Complete re-work of vimrc, doc and the installation process, after reading book
