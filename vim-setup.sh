@@ -8,6 +8,18 @@ if [ ! -e "vimrc" ]; then
   exit 1
 fi
 
+# Install vim package manager initially (update via :PackUpdate):
+echo "Installing vim package manager..."
+minpacdir="$homedir/.vim/pack/minpac/opt"
+if [ -e "$minpacdir" ]; then
+    echo "minpac is already installed"
+else
+    echo "minpac is not installed, installing now..."
+    mkdir -p "$minpacdir"
+    cd "$minpacdir"
+    git clone https://github.com/k-takata/minpac.git
+fi
+
 if [ -e "$homedir/.vimrc" ]; then
   echo "~/.vimrc detected in your home drive!"
   while true; do
@@ -19,25 +31,17 @@ if [ -e "$homedir/.vimrc" ]; then
           echo "Copying vimrc-user to ~/.vimrc..."
           cp "vimrc-user" "$homedir/.vimrc"
           break;;
-      [Nn]* ) break;;
+      [Nn]* )
+          echo "Please manually source the file vimrc into your own ./vimrc"
+          echo "and run :PackUpdate after re-strting vim."
+          exit
+          break;;
       * ) echo "Please answer Y or N.";;
     esac
   done
 else
   echo "No ~/.vimrc detected in your home drive, installing template"
   cp "vimrc-user" "$homedir/.vimrc"
-fi
-
-# Install vim package manager initially (update via :PackUpdate):
-echo "Installing vim package manager..."
-minpacdir="$homedir/.vim/pack/minpac/opt"
-if [ -e "$minpacdir" ]; then
-    echo "minpac is already installed"
-else
-    echo "minpac is not installed, installing now..."
-    mkdir -p "$minpacdir"
-    cd "$minpacdir"
-    git clone https://github.com/k-takata/minpac.git
 fi
 
 # Install/Update plugins:
@@ -51,4 +55,3 @@ vim -c PackUpdate  # exit vim when done
 cd "$olddir"
 
 echo "Installation done."
-echo "You may copy vimrc-local to ~/.vimrc-local if not yet done."

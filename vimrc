@@ -14,7 +14,7 @@
 "
 
 "
-" Personal vimrc file version 2.0.1
+" Personal vimrc file version 2.0.2
 "
 
 " General Config --------------------------------------------------------------

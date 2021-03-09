@@ -9,10 +9,11 @@ endif
 "colorscheme gruvbox
 
 " Use this to increase contrast on low-contrast screens:
-"hi Normal guibg=Black ctermbg=Black
+" hi Normal guibg=Black ctermbg=Black
 
 " Font settings ---------------------------------------------------------------
-" Use powerline fonts. This requires the patched fonts to be installed on the
-" end-system (the system rendering the Vim screen). On Ubuntu, install the
-" fonts-powerline package.
-"let g:airline_powerline_fonts = 1
+" Use powerline fonts. This requires the patched powerline-fonts to be installed
+" on the end-system (the system that displays the screen). On Ubuntu, install
+" the fonts-powerline package:
+" let g:airline_powerline_fonts = 1
+

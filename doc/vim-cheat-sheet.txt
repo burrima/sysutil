@@ -13,7 +13,7 @@
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 #
 
-My Personal Vim Cheat Sheet                            (for vimrc version 2.0.1)
+My Personal Vim Cheat Sheet                         (for my vimrc version 2.0.2)
 ================================================================================
 
 This cheat sheet is to be used together with my personal vimrc file
@@ -47,19 +47,18 @@ See [1], Tip 1-11:
   * Make reasonable undo chunks (chunk = from normal to insert mode and back)
     (note: arrow keys act like '<Esc>hi', breaking the chunk - use hjkl keys)
   * Dot formula: The ideal: One keystroke to move, another to execute
+  * Builtin help: ":h <term>" (jump to links with <Space>g and back with <C-o>)
 
 Motions ------------------------------------------------------------------------
 To move around in Normal and visual modes and to combine with Operator Commands
   h,j,k,l           left, down, up, right
-  w,b,e,W,B,E       to next, prev, end word or WORD (=sequence of no-space)
+  w,b,e,W,B,E       to next, previous, end word or WORD (=sequence of non-space)
   0,$               to start, end of line
   g0,g$             to first, last non-blank char of line (alias for ^ and g_)
-  f{char},t{char}   to occurrence of char in line (incl/excl char)
-  F{char},T{char}   to occurrence of char in line (incl/excl char) backwards
-  ; or ö            repeat last f,t,F or T
-  , or é            repeat last f,t,F or T in opposite direction
-  gg,G              to top, bottom of file
-  H,L               to top, bottom of screen
+  f{char},t{char}   to occurrence of char in line (incl/excl char) to right
+  F{char},T{char}   to occurrence of char in line (incl/excl char) to left
+  ö or ;            repeat last f,t,F or T (ö is in close reach)
+  é or ,            repeat last f,t,F or T in opposite direction
   {count}|          to screen column {count} in the current line
 
 Text Objects -------------------------------------------------------------------
@@ -83,6 +82,8 @@ Navigation, Marks & Jumps ------------------------------------------------------
 
   m{mark},'{mark}   set mark, jump to mark (a-z=local, A-Z=global mark)
 
+  Jumps (can also be combined with Operator Commands, like Motions):
+  gg,G              jump to top, bottom of file
   g;,g,             jump to previous, next change (traverse change list)
   gi                short for '^i (jump to last change and go to Insert mode)
   <C-o>,<C-i>       jump back, forward (traverse jump list)
@@ -90,7 +91,7 @@ Navigation, Marks & Jumps ------------------------------------------------------
   (,),{,}           jump to next, previous sentence, paragraph
   H,M,L             jump to top, middle, bottom of screen
 
-  Automatic Marks (readonly):
+  Automatic Marks (read-only):
   ''                position before the last jump within current file
   '.                location of last change
   '^                location of last insertion
@@ -98,7 +99,7 @@ Navigation, Marks & Jumps ------------------------------------------------------
   '<,'>             start, end of (current or) last visual selection
 
   Notes:
-    * motions move around within a file, jumps can move between files
+    * motions move around within a file, some jumps can move between files
     * set a global mark before going code diving (easy return to start)
     * vim maintains a change list for each individual buffer (see ":changes")
     * vim maintains a jump list for each individual window (see ":jumps")
@@ -114,14 +115,13 @@ vim has different modes and each mode has its own set of commands:
 
 Normal Mode Commands -----------------------------------------------------------
 Basic Commands
-  i,a,I,A           insert/append to cursor or start/end of line in Insert Mode
+  i,a,I,A           insert/append to cursor or start/end of line in Insert mode
   r,R               switch to (single char, multi char) Replace mode
   v,V,<C-v>         switch to Visual character, line or block mode
-  gv                reselect last selection (and enter Visual mode)
+  gv                re-select last selection (and enter Visual mode)
   :                 switch to Command-Line mode (enter Ex commands)
-  q:,q/,q?          show history of Ex commands, fw-, bw-searches to edit
   u,<C-r>           undo, redo
-  <C-l>             clear screen (unmark matches too)
+  <C-l>             clear screen (clear search highlights too)
   x,"{register}x    cut character to unnamed or specific register
   p,"{register}p    put = paste from unnamed register or specific register
   gp,"{register}gp  same as 'p' but place cursor at end of inserted region
@@ -137,6 +137,7 @@ Basic Commands
       keys in insert mode are like <Esc><arrow>i)
     * use xp to swap 2 characters
     * most commands can be run n times: [count]<command>, e.g. 2x
+    * explicit copy-paste is called yank-put in vim (historical reasons)
 
 Operator Commands (combine with Motion, search or use in Visual Mode)
   <operator>        switch to Operator-Pending mode (waiting for Motion)
@@ -151,14 +152,13 @@ Operator Commands (combine with Motion, search or use in Visual Mode)
     * Action = Operator + Motion (operator commands are applied to a marked
       range or require a motion) - powerful combinations!
     * power move: use search as motion, e.g. "d/{search-term}<CR>"
-    * explicit copy-paste is called yank-paste in vim
     * operator doubling (e.g. dd) = apply to whole line
 
 Compound Commands
   A  = $a           append at end of line
   C  = c$           change till end of line
   I  = ^i           insert at the beginning of line
-  J  = A<DEL><Esc>  join 2 lines (append lower line to the current one)
+  J  = A<Del><Esc>  join 2 lines (append lower line to the current one)
   o  = A<CR>        start new line in insert mode
   O  = ko           start new line in insert mode above current line
   P  = hp           paste before current position
@@ -171,12 +171,10 @@ Compound Commands
 
 Visual Mode Commands -----------------------------------------------------------
   <Esc>             switch to Normal mode
-  v,V,<C-v>         change to Visual character, line or block mode
+  v,V,<C-v>         change to Visual character, Visual line or Visual block mode
   ~                 change case of selection
-  u,U               change selection to lower case, upper case
   p,"{register}p    replace selection with unnamed, specific register content
-  c,d,y             change, delete, yank selection ("{register}<cmd> possible)
-  o                 go to other end of highlighted text
+  o                 jump to other end of highlighted text
 
   Notes:
     * when using dot command to repeat visual mode command, it acts on the same
@@ -188,11 +186,11 @@ Visual Mode Commands -----------------------------------------------------------
       (alternatively use ":normal A;" over selected range to append ';')
 
 Insert Mode Commands -----------------------------------------------------------
-  <scC>             switch to Normal mode
+  <Esc>             switch to Normal mode
   <C-o>             switch to Insert Normal mode (1-shot Normal mode command)
   <backspace>       delete back one letter
-  <C-w>             delete back one word (works in ex and bash as well)
-  <C-u>             delete back to start of line (works in ex and bash as well)
+  <C-w>             delete back one word (works in Ex and Bash as well)
+  <C-u>             delete back to start of line (works in Ex and Bash as well)
   <C-r>{register}   paste content of register
 
   Notes:
@@ -249,8 +247,8 @@ Patterns, Search & Replace -----------------------------------------------------
 In Normal mode:
   *,#               go to the next, previous occurrence of word under cursor
   n,N               find next, find previous occurrence
-  /{pattern}        open Command line to forward-search the {pattern}
-  ?{pattern}        open Command line to backward-search the {pattern}
+  /{pattern}        open command line to forward-search the {pattern}
+  ?{pattern}        open command line to backward-search the {pattern}
   q/,q?             open buffer of search history to edit and re-issue with <CR>
 
   :[range]global/{pattern}/[cmd]
@@ -304,9 +302,9 @@ Windows, Tabs  -----------------------------------------------------------------
   <C-w>T            move current split to a separate tab
 
   Notes:
-    * Opening a file is easy with FZF plugin: Press <C-p>, then search, select
-      with <C-p>,<C-n> (or Up,Down) and press <CR>, <C-v>, <C-s> or <C-t> to
-      open in active window, new vertical split, new horizontal split or new tab
+    * Opening a file is easy with FZF plugin: Press <Space>f, then search,
+      select with <C-p>,<C-n> and press <CR>, <C-v>, <C-s> or <C-t> to open in
+      active window, new vertical split, new horizontal split or new tab
     * Prefer splits over tabs (tabs are more like "virtual desktops")
 
 Buffers ------------------------------------------------------------------------

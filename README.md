@@ -58,7 +58,8 @@ $ ./vim-setup.sh  # -> follow the instructions
 The installation will ask you to overwrite the existing `~/.vimrc` file. If you
 answer with yes, a backup called `~/.vimrc-backup` will be made before. So, it's
 pretty safe to say yes. If you say no, then you have to manually source the
-`sysutil/vimrc` file into your own vimrc config file.
+`sysutil/vimrc` file into your own vimrc config file (use `vimrc-user` as
+inspiration).
 
 The reason why the new installation process does not copy the vimrc directly to
 your home drive is that it leaves you the possibility to add your own personal
@@ -73,6 +74,8 @@ $ ln -s /opt/btaflint.vim ~/.vim/pack/btaflint/start/btaflint/plugin/btaflint.vi
 ```
 This will install a small local plugin as an extension to ALE. It is needed to
 make the `btaflint` extra linting script active.
+
+If you are brave, you may copy the file `vimrc-burrima` to `~/.vimrc`.
 
 #### Install Powerline Fonts
 The airline package for the status line can make use of so-called "Powerline
@@ -133,11 +136,8 @@ for more information.
 
 For python, I have issued the following commands:
 ```
-$ python3 venv -m .venv
-$ source .venv/bin/activate
 $ pip3 install -U jedi
 $ pip3 install -U jedi-language-server
-$ jedi-language-server
 ```
 
 The variable `g:ale_linters` must be extended with `jedils` - which is already
@@ -192,9 +192,13 @@ Uninstalling is as easy as removing the path again.
 
 ### Vimrc revision history
 
+#### Version 2.0.2
+Stop vim-setup when user does not want to overwrite his vimrc file (just setup
+the minimum needed). Small documentation fixes and cleanup.
+
 #### Version 2.0.1
 Minor improvement in the installation process. Use global btaflint script
-instead of local one to make it independent of currently checkout out branch.
+instead of local one to make it independent of currently checked-out branch.
 
 #### Version 2.0.0
 Complete re-work of vimrc, doc and the installation process, after reading book
@@ -219,7 +223,7 @@ Add btaflint - a project specific linter that we use in our office.
 Use full path in backup and swap files to prevent file clashes on shared PCs.
 
 #### Version 1.0.0
-Initial version from 2018, after reading the book [1].
+Initial version from 2014-2018, after reading the book [1].
 
 
 ### Personal Vim 8 Roadmap
@@ -233,3 +237,4 @@ next steps:
     needed
   * Code folding (already built-in to vim, see `:h folding`)
   * More modern looking color scheme
+  * Add vimdiff commands to cheat-sheet (:h vimdiff)
