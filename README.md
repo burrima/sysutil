@@ -192,6 +192,9 @@ Uninstalling is as easy as removing the path again.
 
 ### Vimrc revision history
 
+#### Version 2.0.3
+Fix vim-setup script for fresh installs.
+
 #### Version 2.0.2
 Stop vim-setup when user does not want to overwrite his vimrc file (just setup
 the minimum needed). Small documentation fixes and cleanup.

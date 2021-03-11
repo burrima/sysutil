@@ -18,6 +18,7 @@ else
     mkdir -p "$minpacdir"
     cd "$minpacdir"
     git clone https://github.com/k-takata/minpac.git
+    cd "$olddir"
 fi
 
 if [ -e "$homedir/.vimrc" ]; then
@@ -52,6 +53,5 @@ echo "Note: please ignore messages about missing plugins when vim starts..."
 echo "Press <Enter> to continue:"
 read
 vim -c PackUpdate  # exit vim when done
-cd "$olddir"
 
 echo "Installation done."
