@@ -240,4 +240,4 @@ next steps:
     needed
   * Code folding (already built-in to vim, see `:h folding`)
   * More modern looking color scheme
-  * Add vimdiff commands to cheat-sheet (:h vimdiff)
+  * Check out the abbreviation feature (:h abbreviations)
