@@ -2,9 +2,13 @@
 
 The purpose of this repository is to collect some utilities that are shared
 among different computers. You are free to use my stuff in here but I don't take
-liability for anything.
+liability for anything. There are the following utilities available:
 
-## Vim 8
+- [Vim 8 Configuration](#vim-8)
+- [Git Configuration](#git-config)
+- [Bash Aliases](#bash-aliases)
+
+## Vim 8 Configuration
 
 This repository contains a [vimrc](vimrc) file that you can use to have the same
 Vim experience than I have. Along with that, you can use my
@@ -75,7 +79,17 @@ $ ln -s /opt/btaflint.vim ~/.vim/pack/btaflint/start/btaflint/plugin/btaflint.vi
 This will install a small local plugin as an extension to ALE. It is needed to
 make the `btaflint` extra linting script active.
 
-If you are brave, you may copy the file `vimrc-burrima` to `~/.vimrc`.
+If you are brave, you may copy or link the file `vimrc-burrima` to `~/.vimrc`.
+
+To update the vimrc after you have done the first installation, the following
+steps are sufficient:
+```
+$ cd ~/sysutil
+$ git pull
+$ vim
+:PackMaintain
+```
+It will keep your local `~/.vimrc` file untouched.
 
 #### Install Powerline Fonts
 The airline package for the status line can make use of so-called "Powerline
@@ -192,6 +206,14 @@ Uninstalling is as easy as removing the path again.
 
 ### Vimrc revision history
 
+#### Version 2.1.0
+Some useful extensions:
+  * add :PackMaintain command to clean and update plugins in one step
+  * add plugin vim-repeat to make extra plugin commands repeatable
+  * add python pep8 indentation plugin
+  * rework and update Git integration
+  * update documentation
+
 #### Version 2.0.3
 Fix vim-setup script for fresh installs.
 
@@ -234,10 +256,40 @@ Initial version from 2014-2018, after reading the book [1].
 There is still a lot more to explore about Vim. This is a collection of possible
 next steps:
 
-  * Explore [https://www.vimfromscratch.com](https://www.vimfromscratch.com) and
-    other online resources
   * Collect experience with ALE and LSP and maybe look for better solutions if
-    needed
+    needed, e.g.:
+      + find-references does not show code snippets
+      + auto-completion is unnatural to use (<C-n> is a hard reach)
   * Code folding (already built-in to vim, see `:h folding`)
+  * Explore possibilities of Git integration (vim-fugitive) - see
+    <http://vimcasts.org/blog/2011/05/the-fugitive-series/>
+  * Explore further text objects (e.g. "inner function") and how to define own
+    ones when needed
   * More modern looking color scheme
   * Check out the abbreviation feature (:h abbreviations)
+
+### Other Resources
+  * Drew Neil's vimcasts and blog: <https://vimcasts.org>
+  * <https://www.vimfromscratch.com>
+  * Find free key mappings: <http://vimcasts.org/blog/2014/02/follow-my-leader/>
+
+
+## Git Config
+
+If you'd like to use my general git settings, then add the following line to
+your personal `~/.gitconfig` file:
+
+```
+[include]
+	path = sysutil/gitconfig
+```
+
+
+## Bash Aliases
+
+If you want to use my Bash aliases, then do:
+
+```
+$ cd ~
+$ ln -s sysutil/bash\_aliases .bash\_aliases
+```

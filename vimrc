@@ -14,7 +14,7 @@
 "
 
 "
-" Personal vimrc file version 2.0.3
+" Personal vimrc file version 2.1.0
 "
 
 " General Config --------------------------------------------------------------
@@ -185,6 +185,7 @@ call minpac#init()
 call minpac#add('k-takata/minpac', {'type': 'opt'})
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
+command! PackMaintain call minpac#clean() | call minpac#update()
 
 " enable file type detection (with plugin and auto-indent):
 filetype plugin indent on
@@ -269,9 +270,12 @@ call minpac#add('tpope/vim-fugitive')
 
 " PACK vim-signify - show, jump-to and stage partial git hunks (supports other vcs)
 call minpac#add('mhinz/vim-signify')
-nnoremap <silent> <leader>gd :SignifyDiff<cr>
-nnoremap <silent> <leader>gp :SignifyHunkDiff<cr>
-nnoremap <silent> <leader>gu :SignifyHunkUndo<cr>
+nnoremap <silent> <leader>gp :SignifyHunkDiff<CR>
+nnoremap <silent> <leader>gu :SignifyHunkUndo<CR>
+nnoremap <silent> <leader>gs :tab Gstatus<CR>
+nnoremap <silent> <leader>gl :tab Git log<CR>
+nnoremap <silent> <leader>gd :tab Gdiff<CR>
+nnoremap <silent> <leader>gc :tabclose<CR>
 
 " PACK vim-taglist
 call minpac#add('vim-scripts/taglist.vim')
@@ -311,3 +315,9 @@ autocmd VimEnter * let g:airline#extensions#ale#enabled = 1
 " PACK vim-rainbow - different colors for different pairs of brackets
 call minpac#add('frazrepo/vim-rainbow')
 nnoremap <silent> <leader>b :RainbowToggle<CR>
+
+" PACK vim-repeat - Make plugin extensions repeatable
+call minpac#add('tpope/vim-repeat')
+
+" PACK vim-python-pep8-indent - PEP8 indentation for python
+call minpac#add('vimjas/vim-python-pep8-indent')

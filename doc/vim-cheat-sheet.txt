@@ -13,7 +13,7 @@
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 #
 
-My Personal Vim Cheat Sheet                         (for my vimrc version 2.0.3)
+My Personal Vim Cheat Sheet                         (for my vimrc version 2.1.0)
 ================================================================================
 
 This cheat sheet is to be used together with my personal vimrc file
@@ -376,19 +376,36 @@ Code Navigation ----------------------------------------------------------------
   [T,]T,[t,]t       jump to first, last, next, previous item in tag match list
   <Space>t          prompt user to choose an item (short for :tselect)
 
-Vimdiff ------------------------------------------------------------------------
-There is the diff mode and the tool vimdiff which can be used as diff viewer.
+Vimdiff & Git Integration ------------------------------------------------------
+In Normal mode:
+  [C,[c,]c,]C       jump to the first, prev, next, last hunk in current buffer
+  <Leader>gp        show diff of current hunk
+  <Leader>gu        undo current hunk (use 'u' to undo if not satisfied)
+
+  <Leader>gs        git status (<c-n>,<c-p> to navigate, -,+ to stage, unstage))
+  <leader>gl        show git log (<C-n>,<C-p> for down/up, <CR> to view commit)
+  <Leader>gd        show diff of current buffer in new tab (l: index, r: local)
+
+  :Gwrite,:Gread    "git add", "git checkout" of file in current window
+  :Gedit            open indexed version of file (":Gedit :0" of current file)
+  :Gmove,:Gremove   "git mv", "git rm" of current file
+  :Gblame           "git blame"
+  :Gitcommit        open the commit window to create a commit
+  :Gdiff!           open 3-way vimdiff to solve merge conflicts
+  :Git {cmd}        run any git command externally (e.g. :Git add .)
+
+In "vimdiff mode":
+  [C,[c,]c,]C       jump to the first, prev, next, last hunk in current buffer
   :[range]diffg[et] modify current buffer to undo diff to with another buffer
   :[range]diffpu[t] modify another buffer to undo diff with current buffer
+  do,dp             short for :diffget,:diffput (no range, no visual) do=obtain
+  :Gwrite[!]        add file in current buffer directly to the index
+  <Leader>gc or :tc close git diff windows (shortcut for :tabclose)
 
-Use vimdiff as git mergetool:
-  $ git config merge.tool vimdiff
-  $ git config merge.conflictstyle diff3
-  $ git config mergetool.prompt false
-  :diffg RE         get from REMOTE (changes on the other end)
-  :diffg BA         get from BASE (state before both changes)
-  :diffg LO         get from LOCAL (changes made local on current branch)
-  (see https://www.rosipov.com/blog/use-vimdiff-as-git-mergetool/)
+Notes:
+  * use "<Leader>gs", select file, then press <CR>, then "<Leader>gd" to
+    review changes and stage them
+  * watch http://vimcasts.org/e/31 (32, 33, 34)
 
 Plugins ------------------------------------------------------------------------
   * add/remove entry in .vimrc, then restart Vim and type :PackUpdate/:PackClean
@@ -425,17 +442,11 @@ Installed plugins, and their specific shortcuts (see vimrc file):
       :Obsess!        stop recording session and delete Session.vim file
       $ vim -S [path] start Vim and load a session
 
-  * signify: Show changes in current buffer (works with different vcs)
-      [C,[c,]c,]C     jump to the first, prev, next, last hunk
-      <Leader>gd      show diff of current buffer (close with :tc)
-      <Leader>gp      show diff of current hunk
-      <Leader>gu      undo current hunk (use 'u' to undo if not satisfied)
-
   * taglist.vim: Show tags of a buffer for easy navigation
       <Leader>t       open taglist to select a tag
 
   * surround: "Quoting/parenthesizing" made simple
-      ys{textobj}{s}  surround text object with surrounding {s}
+      ys{textobj}{s}  surround text object with surrounding {s} ("you-surround")
       S{s}            surround selection with surrounding {s}
       cs{old}{new}    change surrounding {old} to {new}
       ds{s}           delete surrounding {s}
@@ -449,3 +460,4 @@ Installed plugins, and their specific shortcuts (see vimrc file):
   * airline: More sophisticated status line
   * editorconfig: Respecting Project Conventions (see [2], p. 112)
   * projectionist: Granular project configuration (see [2], p. 117)
+  * signify: Show changes in current buffer (works with different vcs)
