@@ -1,0 +1,16 @@
+[credential]
+	helper = cache --timeout=300
+[core]
+	editor = vim
+[mergetool "fugitive"]
+	cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+[merge]
+	tool = fugitive
+[mergetool]
+	prompt = false
+[alias]
+	pullall = !git pull && git submodule init && git submodule update && git submodule status
+	co = checkout
+	ci = commit
+	st = status
+	br = branch
