@@ -14,7 +14,7 @@
 "
 
 "
-" Personal vimrc file version 2.1.0
+" Personal vimrc file version 2.1.1
 "
 
 " General Config --------------------------------------------------------------
@@ -119,14 +119,8 @@ nnoremap <silent> [b :bprev<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
-nnoremap <silent> <Space>b :Buffers<CR>
+nnoremap <silent> <Space>b <C-u>:Buffers<CR>
 nnoremap <silent> <Space># :b#<CR>
-" tag-list:
-nnoremap <silent> [t :tprev<CR>
-nnoremap <silent> ]t :tnext<CR>
-nnoremap <silent> [T :tfirst<CR>
-nnoremap <silent> ]T :tlast<CR>
-nnoremap <silent> <Space>t :tselect<CR>
 
 
 " Abbreviations of Ex-Commands ------------------------------------------------

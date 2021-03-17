@@ -206,6 +206,12 @@ Uninstalling is as easy as removing the path again.
 
 ### Vimrc revision history
 
+#### Version 2.1.1
+Minor bugfixes:
+  * Remove unused mappings for taglist (fix clash of `<Space>t` with ALE plugin)
+  * Fix buffer list navigation with `<C-j>` and `<C-k>`
+  * Update vim-cheat-sheet documentation
+
 #### Version 2.1.0
 Some useful extensions:
   * add :PackMaintain command to clean and update plugins in one step
