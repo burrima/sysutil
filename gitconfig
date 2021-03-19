@@ -2,6 +2,12 @@
 	helper = cache --timeout=300
 [core]
 	editor = vim
+[difftool "vimdiff"]
+	cmd = vimdiff "$LOCAL" "$REMOTE"
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = true
 [mergetool "fugitive"]
 	cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [merge]
