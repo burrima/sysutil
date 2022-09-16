@@ -23,8 +23,7 @@ Vim experience than I have. Along with that, you can use my
 
 ### Installation and setup
 
-To make everything work, you need at least Vim version 8 (Neovim might work as
-well but is not tested).
+To make everything work, you need at least Vim version 8 (or Neovim).
 
 #### Install Vim 8 and required dependencies
 
@@ -103,7 +102,7 @@ using Vim over SSH, fonts need to be installed on the client side).
 
 To install them in Ubuntu 20.04, type:
 ```
-$ sudo apt fonts-powerline
+$ sudo apt install fonts-powerline
 ```
 
 To tell Vim to use the fonts, add the following line to your local .vimrc file:
@@ -157,6 +156,11 @@ $ pip3 install -U jedi-language-server
 The variable `g:ale_linters` must be extended with `jedils` - which is already
 done in my vimrc.
 
+For C++, I have used the following:
+```
+$ sudo apt install clangd
+```
+
 ### Example config files for project specific settings
 
 This repo contains two files that you can use in your project root directories,
@@ -205,6 +209,21 @@ Uninstalling is as easy as removing the path again.
 
 
 ### Vimrc revision history
+
+#### Version 2.2.0
+Add support for Neovim (and other updates):
+  * Let user choose default editor (vim or nvim) in bash_aliases
+  * Add editor support for lynx in bash_aliases
+  * Add cutlass plugin to vimrc-burrima to have better cut-paste experience
+  * Fix `<Space>b` behavior
+  * Use `gs` instead of `<Leader>*` to grep for word under cursor
+  * Add `<Space>i` and `<Space>s` to jump to Implementation and do Symbol search
+    with ALE
+  * Remove default linters and fixers from vimrc to enable ALE plugin defaults
+    (use projectionist plugin to specify project-specific ones)
+  * Add further shortcuts to gitconfig
+  * Update vim-cheat-sheet documentation
+  * Update this README
 
 #### Version 2.1.1
 Minor bugfixes:

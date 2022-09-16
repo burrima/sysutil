@@ -14,7 +14,7 @@
 "
 
 "
-" Personal vimrc file version 2.1.1
+" Personal vimrc file version 2.2.0
 "
 
 " General Config --------------------------------------------------------------
@@ -119,7 +119,7 @@ nnoremap <silent> [b :bprev<CR>
 nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bfirst<CR>
 nnoremap <silent> ]B :blast<CR>
-nnoremap <silent> <Space>b <C-u>:Buffers<CR>
+nnoremap <silent> <Space>b :<C-u>Buffers<CR>
 nnoremap <silent> <Space># :b#<CR>
 
 
@@ -192,14 +192,6 @@ let g:fzf_layout = { 'down': '~40%' }  " for a more natural feeling
 
 " PACK ALE Linter:
 call minpac#add('w0rp/ale')
-let g:ale_linters = {
-\   'javascript': ['standard'],
-\   'cpp': ['cpplint'],
-\   'python': ['flake8', 'jedils'],
-\}
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\}
 let g:ale_set_loclist = 0  " don't use location list (use [W,[w,]w,]W instead)
 let g:ale_echo_msg_format = '[%linter%] %code: %%s [%severity%]'
 let g:ale_fix_on_save = 1  " run fixer on save
@@ -216,6 +208,8 @@ let g:ale_lsp_suggestions = 1
 let g:ale_maximum_file_size = 500000
 noremap <Space>d :ALEGoToDefinition<CR>
 noremap <Space>t :ALEGoToTypeDefinition<CR>
+noremap <Space>i :ALEGoToImplementation<CR>
+noremap <Space>s :ALESymbolSearch <C-r><C-w><CR>
 noremap <Space>r :ALEFindReferences<CR>
 noremap <Space>h :ALEHover<CR>
 call SetupCommandAlias("rename", "ALERename")
@@ -225,12 +219,13 @@ call minpac#add('mhinz/vim-grepper')
 let g:grepper = {}
 let g:grepper.tools = ['rg', 'git', 'grep']
 " search for current word:
-nnoremap <silent> <Leader>* :Grepper -cword -noprompt<CR>
+nnoremap <silent> gs :Grepper -cword -noprompt<CR>
 " search for current selection:
-nmap <silent> gs <plug>(GrepperOperator)
 xmap <silent> gs <plug>(GrepperOperator)
-" replace original grep with GrepperRg:
-call SetupCommandAlias("grep", "GrepperRg")
+" refine grepping commands:
+call SetupCommandAlias("grep", "GrepperGrep")
+call SetupCommandAlias("gitgrep", "GrepperGit")
+call SetupCommandAlias("rg", "GrepperRg")
 
 " PACK vim-editorconfig - Respecting Project Conventions
 let g:editorconfig_verbose = 1

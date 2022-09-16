@@ -13,7 +13,7 @@
 #  0. You just DO WHAT THE FUCK YOU WANT TO.
 #
 
-My Personal Vim Cheat Sheet                         (for my vimrc version 2.1.1)
+My Personal Vim Cheat Sheet                         (for my vimrc version 2.2.0)
 ================================================================================
 
 This cheat sheet is to be used together with my personal vimrc file
@@ -86,7 +86,7 @@ Basic Commands
     * most commands can be run n times: [count]<command>, e.g. 2x
     * explicit copy-paste is called yank-put in Vim (historical reasons)
 
-Motions -- (:h cursor-motions) -------------------------------------------------
+Motions (:h cursor-motions) ----------------------------------------------------
 To move around in Normal and Visual modes and to combine with Operator commands
   h,j,k,l           left, down, up, right
   w,b,e,W,B,E       to next, previous, end word or WORD (=sequence of non-space)
@@ -283,33 +283,6 @@ Registers (:h registers) -------------------------------------------------------
     * use "_ or "0 (or named registers) when combining yank and change/delete
     * use ":set paste"/":set nopaste" on problems pasting from system clipboard
 
-Windows, Tabs  (:h windows, :h tabpage) ----------------------------------------
-  <C-w>s or :split  split window
-  <C-w>v or :vs     vertical split window
-  <C-w>x            navigate to window x=h,j,k,l
-  <C-w>X            move window X=H,J,K,L
-  <C-w>=            make all windows same size (auto-adjust)
-  <C-w>+,<C-w->-    increase, decrease current window size
-  <C-w>|,<C-w>_     maximize current window in width, height (<C-w>= to restore)
-  <C-w>gf           open the file whose name is under the cursor in a new tab
-  :q[uit],qa[ll]    quit the current, all window(s) (use :q! to force unsaved)
-  :te [file]        open [file] in new tab (te=tabedit in vimrc)
-  :tc               close current tab (incl. all split windows) (tc=tabclose)
-  gt,gT,{n}gt       next, previous, n-th tab
-  :tabm i           move current tab to position i
-  <C-w>T            move current split to a separate tab
-
-  Notes:
-    * opening a file is easy with FZF plugin: Press <Space>f, then search,
-      select with <C-p>,<C-n> and press <CR>, <C-v>, <C-s> or <C-t> to open in
-      active window, new vertical split, new horizontal split or new tab
-    * prefer splits over tabs (tabs are more like "virtual desktops")
-
-Navigation in a Window:
-  zz,zt,zb          scroll cursor position to center, top, bottom
-  <C-f>,<C-d>,<C-e> scroll down full page, half page, one line
-  <C-b>,<C-u>,<C-y> scroll up full page, half page, one line
-
 Buffers (:h buffers) -----------------------------------------------------------
   <Space>f          launch (+fzf) tool to fuzzy-search and open files
   <Space>b          show buffer list (+fzf) (use search or {number}<CR> to load)
@@ -326,6 +299,34 @@ Buffers (:h buffers) -----------------------------------------------------------
   <C-j>,<C-k>       navigate up, down in file list (same as arrow keys)
   <C-v>,<C-t>       open selected in separate vertical split, separate tab
   <C-c>             close the FZF tool
+
+Windows, Tabs  (:h windows, :h tabpage) ----------------------------------------
+  <C-w>s or :split  new split window
+  <C-w>v or :vs     new vertical split window
+  <C-w>h,j,k,l      navigate to window left, below, above, right of current
+  :q[uit],qa[ll]    quit the current, all window(s) (:q[a]! to force if unsaved)
+
+  <C-w>H,J,K,L      move window left-most, bottom-most, ... H,J,K,L
+  <C-w>[num]x       exchange window with next one (or previous if N/A) or {num}
+  <C-w>T            move current window to a separate tab
+  <C-w>o            make current window the only one (close others)
+
+  <C-w>=            make all windows same size (auto-adjust)
+  :res [+-][N]      set window height to max, N, or increase, decrease by N
+  :vert res [+-][N] set window width to max, N, or increase, decrease by N
+
+  :te [file]        open [file] in new tab (te=tabedit in vimrc)
+  :tc               close current tab (incl. all split windows) (tc=tabclose)
+  gt,gT,{n}gt       next, previous, n-th tab
+  :tabm i           move current tab to position i
+
+  Notes:
+    * prefer splits over tabs (tabs are more like "virtual desktops")
+
+Navigation inside a Window:
+  zz,zt,zb          scroll cursor position to center, top, bottom
+  <C-f>,<C-d>,<C-e> scroll down full page, half page, one line
+  <C-b>,<C-u>,<C-y> scroll up full page, half page, one line
 
 Quickfix List / Location Lists (:h quickfix) -----------------------------------
   <Space>q,<Space>l open Quickfix-, Location-list (short for :copen,:lopen)
@@ -389,13 +390,17 @@ Using the ALE plugin and a language-server running in the back.
   <Space>d          jump to definition (+ale)
   <Space>t          jump to the definition of the type (+ale)
   <Space>r          find references (+ale)
+  <Space>i          jump to implementation (if language-server supports) (+ale)
+  <Space>s          search symbol under cursor (+ale)
   <Space>h          get mouse hover info (+ale)
   :rename           refactor (i.e. rename a symbol) (+ale)
   <Leader>t         open (+taglist) to select a tag
 
 Searching files with grep-alikes (see [2], p. 56) (+grepper):
-  <Leader>*,gs      search for the current word, the current selection
-  :grep <term>      search with ripgrep for the term (alias in vimrc)
+  gs                search for the current word, the current visual selection
+  :grep <term>      search with grep for the term (alias in vimrc)
+  :gitgrep <term>   search with git grep for the term (alias in vimrc)
+  :rg <term>        search with ripgrep for the term (alias in vimrc)
   :Grepper<CR>      enter Grepper Prompt (use <Tab> to select grep tool)
 
 Notes:
@@ -454,3 +459,12 @@ Some notable plugins & specific cmds (others marked above with (+{plugin}):
     S{s}            surround selection with surrounding {s}
     cs{old}{new}    change surrounding {old} to {new}
     ds{s}           delete surrounding {s}
+
+Neovim specific ----------------------------------------------------------------
+  :ter[minal]       open a Terminal buffer
+  a,A,i,I,...       enter Terminal mode in Terminal buffer
+  <Esc>             leave Terminal mode
+  <C-v><Esc>        send <Esc> key to terminal process (verbatim-Esc)
+
+  Notes:
+    * Clear git editor config to make it use $VISUAL from .bash_aliases

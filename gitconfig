@@ -1,22 +1,27 @@
 [credential]
-	helper = cache --timeout=900
+    helper = cache --timeout=900
 [core]
-	editor = vim
+    editor = vim
 [difftool "vimdiff"]
-	cmd = vimdiff "$LOCAL" "$REMOTE"
+    cmd = vimdiff "$LOCAL" "$REMOTE"
+[difftool "meld"]
+     cmd = meld "$LOCAL" "$REMOTE"
 [diff]
-	tool = vimdiff
+    tool = vimdiff
 [difftool]
-	prompt = true
+    prompt = true
 [mergetool "fugitive"]
-	cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
+    cmd = vim -f -c \"Gvdiffsplit!\" \"$MERGED\"
 [merge]
-	tool = fugitive
+    tool = fugitive
 [mergetool]
-	prompt = false
+    prompt = false
 [alias]
-	pullall = !git pull && git submodule init && git submodule update && git submodule status
-	co = checkout
-	ci = commit
-	st = status
-	br = branch
+    pullall = !git pull && git submodule init && git submodule update && git submodule status
+    pulllatest = !git pull && git submodule init && git submodule update --remote && git submodule status
+    pa = pullall
+    pl = pulllatest
+    co = checkout
+    ci = commit
+    st = status
+    br = branch

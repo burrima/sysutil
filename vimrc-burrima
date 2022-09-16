@@ -9,7 +9,10 @@ endif
 "colorscheme gruvbox
 
 " Use this to increase contrast on low-contrast screens:
-" hi Normal guibg=Black ctermbg=Black
+augroup contrastadjust
+    autocmd!
+    autocmd VimEnter * hi Normal guibg=Black ctermbg=Black
+augroup END
 
 " Font settings ---------------------------------------------------------------
 " Use powerline fonts. This requires the patched powerline-fonts to be installed
@@ -29,3 +32,24 @@ augroup emoji
             \ let g:signify_sign_delete_first_line = emoji#for('broken_heart') |
             \ let g:signify_sign_change = emoji#for('blue_heart')
 augroup END
+
+" PACK cutlass: delete without overwriting registers
+" Vim, by default, performs a cut on all deletion operations (thus overwriting
+" the default register). This plugin remaps c,C,d,D,s,S etc. to fix the issue.
+" See https://github.com/nelstrom/vim-cutlass
+call minpac#add('svermeulen/vim-cutlass')
+" define a key to cut:
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
+nnoremap X D
+
+" other interesting plugins:
+" call minpac#add('svermeulen/vim-subversive')  " for quick substitutions
+
+" Neovim specific settings:
+if has('nvim')
+    set viminfo+=n~/.local/share/vim/viminfo
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <C-v><Esc> <Esc>
+endif
