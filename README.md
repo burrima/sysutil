@@ -210,6 +210,21 @@ Uninstalling is as easy as removing the path again.
 
 ### Vimrc revision history
 
+#### Version 2.3.0
+Incremental update:
+  * bash_aliases: add further shortcuts: ls variants
+  * vimrc cleanup/fixes:
+    * disable inline-ale linting errors because it causes visual problems
+    * remove "set nocompatible" which is contained in vim-sensible
+    * set tagbar with to 70
+    * improve git shortcuts
+    * bring cutlass package to the main vimrc file
+  * vimrc extensions:
+    * add vimrc-sonarlint extension, imported in vimrc-burrima
+    * add vimrc-btaflint (used in office), imported in vimrc-burrima
+    * switch to gruvbox8 color scheme
+  * gitconfig: extend with further commands
+  * update vim cheat sheet
 #### Version 2.2.0
 Add support for Neovim (and other updates):
   * Let user choose default editor (vim or nvim) in bash_aliases

@@ -11,7 +11,7 @@ endif
 " Use this to increase contrast on low-contrast screens:
 augroup contrastadjust
     autocmd!
-    autocmd VimEnter * hi Normal guibg=Black ctermbg=Black
+    autocmd VimEnter * hi Normal guibg=#202020 ctermbg=Black
 augroup END
 
 " Font settings ---------------------------------------------------------------
@@ -33,17 +33,6 @@ augroup emoji
             \ let g:signify_sign_change = emoji#for('blue_heart')
 augroup END
 
-" PACK cutlass: delete without overwriting registers
-" Vim, by default, performs a cut on all deletion operations (thus overwriting
-" the default register). This plugin remaps c,C,d,D,s,S etc. to fix the issue.
-" See https://github.com/nelstrom/vim-cutlass
-call minpac#add('svermeulen/vim-cutlass')
-" define a key to cut:
-nnoremap x d
-xnoremap x d
-nnoremap xx dd
-nnoremap X D
-
 " other interesting plugins:
 " call minpac#add('svermeulen/vim-subversive')  " for quick substitutions
 
@@ -53,3 +42,14 @@ if has('nvim')
     tnoremap <Esc> <C-\><C-n>
     tnoremap <C-v><Esc> <Esc>
 endif
+
+" BTAF LINT -------------------------------------------------------------------
+if !empty(glob("~/sysutil/vimrc-btaflint"))
+  source ~/sysutil/vimrc-btaflint
+endif
+
+"  SONARLINT ------------------------------------------------------------------
+if !empty(glob("~/sysutil/vimrc-sonarlint"))
+  source ~/sysutil/vimrc-sonarlint
+endif
+

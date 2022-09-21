@@ -21,8 +21,6 @@
 " map <Leader> key to ',':
 let mapleader = ','
 
-set nocompatible  " Use Vim defaults (much better!)
-
 " default values, to be overwritten by .editorconfig files (see vim-editorconfig
 " plugin):
 set textwidth=80  " maximum width of inserted text
@@ -206,6 +204,8 @@ autocmd VimEnter * set omnifunc=ale#completion#OmniFunc
 let g:ale_update_tagstack = 1
 let g:ale_lsp_suggestions = 1
 let g:ale_maximum_file_size = 500000
+let g:ale_virtualtext_cursor = 0
+let g:ale_virtualtext = 0
 noremap <Space>d :ALEGoToDefinition<CR>
 noremap <Space>t :ALEGoToTypeDefinition<CR>
 noremap <Space>i :ALEGoToImplementation<CR>
@@ -261,26 +261,25 @@ call minpac#add('tpope/vim-fugitive')
 call minpac#add('mhinz/vim-signify')
 nnoremap <silent> <leader>gp :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>gu :SignifyHunkUndo<CR>
-nnoremap <silent> <leader>gs :tab Gstatus<CR>
+nnoremap <silent> <leader>gs :tab Git<CR>
 nnoremap <silent> <leader>gl :tab Git log<CR>
-nnoremap <silent> <leader>gd :tab Gdiff<CR>
+nnoremap <leader>gd :tab Gvdiff HEAD:%
 nnoremap <silent> <leader>gc :tabclose<CR>
 
 " PACK vim-taglist
 call minpac#add('vim-scripts/taglist.vim')
 let Tlist_Show_One_File = 1
 let Tlist_Close_On_Select = 1
+let Tlist_WinWidth = 70
 nnoremap <silent> <leader>t :TlistOpen<CR>
 
 " PACK vim-obsession
 call minpac#add('tpope/vim-obsession')
 
-" PACK gruvbox - color scheme
-call minpac#add('morhetz/gruvbox')
+" PACK vim-gruvbox8 - color scheme
+call minpac#add('lifepillar/vim-gruvbox8')
 set background=dark  " dark or light
-let g:gruvbox_contrast_dark = 'hard'  " hard, medium, soft
-let g:gruvbox_contrast_light = 'hard'  " hard, medium, soft
-colorscheme gruvbox
+colorscheme gruvbox8
 
 " fix spelling error highlighting for selected theme:
 hi clear SpellBad SpellLocal SpellCap
@@ -310,3 +309,15 @@ call minpac#add('tpope/vim-repeat')
 
 " PACK vim-python-pep8-indent - PEP8 indentation for python
 call minpac#add('vimjas/vim-python-pep8-indent')
+
+" PACK cutlass: delete without overwriting registers
+" Vim, by default, performs a cut on all deletion operations (thus overwriting
+" the default register). This plugin remaps c,C,d,D,s,S etc. to fix the issue.
+" See https://github.com/nelstrom/vim-cutlass
+call minpac#add('svermeulen/vim-cutlass')
+" define a key to cut:
+nnoremap x d
+xnoremap x d
+nnoremap xx dd
+nnoremap X D
+
