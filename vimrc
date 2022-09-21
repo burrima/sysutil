@@ -270,6 +270,7 @@ nnoremap <silent> <leader>gc :tabclose<CR>
 call minpac#add('vim-scripts/taglist.vim')
 let Tlist_Show_One_File = 1
 let Tlist_Close_On_Select = 1
+let Tlist_WinWidth = 70
 nnoremap <silent> <leader>t :TlistOpen<CR>
 
 " PACK vim-obsession
