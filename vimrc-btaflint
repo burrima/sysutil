@@ -1,0 +1,32 @@
+function! HandleBtaflint(buffer, lines) abort
+    let l:output = ale#python#HandleTraceback(a:lines, 10)
+    if !empty(l:output)
+        return l:output
+    endif
+    let l:pattern = '\v^([^:]+):(\d+)?:(\d+)?: (.*)$'
+    for l:match in ale#util#GetMatches(a:lines, l:pattern)
+        let l:item = {
+        \   'filename': l:match[1],
+        \   'lnum': l:match[2] + 0,
+        \   'col': l:match[3] + 0,
+        \   'text': l:match[4],
+        \   'type': 'E',
+        \}
+        call add(l:output, l:item)
+    endfor
+    return l:output
+endfunction
+
+augroup btaflint
+  autocmd!
+  " Note: current command can only lint saved files (btaflint takes no stdin)
+  " TODO: make btaflint stand-alone and use the one in ~/testAutomation/tools/btaflint
+  autocmd VimEnter * call ale#linter#Define('python', {
+  \   'name': 'btaflint',
+  \   'executable': 'btaflint',
+  \   'command': '/opt/btaflint %s',
+  \   'callback': 'HandleBtaflint',
+  \   'lint_file': 1,
+  \})
+augroup END
+

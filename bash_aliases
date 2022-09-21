@@ -9,6 +9,10 @@ alias vim=$VISUAL
 alias vim8='/usr/bin/vim'
 alias nvim='/usr/bin/nvim'
 
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
 # lynx editor support
 alias lynx='lynx -editor=vim'
 
