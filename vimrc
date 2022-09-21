@@ -261,9 +261,9 @@ call minpac#add('tpope/vim-fugitive')
 call minpac#add('mhinz/vim-signify')
 nnoremap <silent> <leader>gp :SignifyHunkDiff<CR>
 nnoremap <silent> <leader>gu :SignifyHunkUndo<CR>
-nnoremap <silent> <leader>gs :tab Gstatus<CR>
+nnoremap <silent> <leader>gs :tab Git<CR>
 nnoremap <silent> <leader>gl :tab Git log<CR>
-nnoremap <silent> <leader>gd :tab Gdiff<CR>
+nnoremap <leader>gd :tab Gvdiff HEAD:%
 nnoremap <silent> <leader>gc :tabclose<CR>
 
 " PACK vim-taglist
