@@ -11,7 +11,7 @@ endif
 " Use this to increase contrast on low-contrast screens:
 augroup contrastadjust
     autocmd!
-    autocmd VimEnter * hi Normal guibg=Black ctermbg=Black
+    autocmd VimEnter * hi Normal guibg=#202020 ctermbg=Black
 augroup END
 
 " Font settings ---------------------------------------------------------------

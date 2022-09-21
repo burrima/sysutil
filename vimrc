@@ -275,12 +275,10 @@ nnoremap <silent> <leader>t :TlistOpen<CR>
 " PACK vim-obsession
 call minpac#add('tpope/vim-obsession')
 
-" PACK gruvbox - color scheme
-call minpac#add('morhetz/gruvbox')
+" PACK vim-gruvbox8 - color scheme
+call minpac#add('lifepillar/vim-gruvbox8')
 set background=dark  " dark or light
-let g:gruvbox_contrast_dark = 'hard'  " hard, medium, soft
-let g:gruvbox_contrast_light = 'hard'  " hard, medium, soft
-colorscheme gruvbox
+colorscheme gruvbox8
 
 " fix spelling error highlighting for selected theme:
 hi clear SpellBad SpellLocal SpellCap
