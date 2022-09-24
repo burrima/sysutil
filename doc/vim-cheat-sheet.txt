@@ -412,9 +412,11 @@ In Normal mode:
   <Leader>gp        show diff of current hunk
   <Leader>gu        undo current hunk (use 'u' to undo if not satisfied)
 
-  <Leader>gs        git status (<c-n>,<c-p> to navigate, -,+ to stage, unstage))
   <leader>gl        show git log (<C-n>,<C-p> for down/up, <CR> to view commit)
   <Leader>gd        show diff of current buffer in new tab (l: index, r: local)
+  <Leader>gs        git status (<c-n>,<c-p> to navigate, - to toggle stage, = to
+                    show diff, dv to show vertical-diff, O to open in tab)
+  g?                show help (when any (+fugitive) git window is open)
 
   :Gwrite,:Gread    "git add", "git checkout" of file in current window
   :Gedit            open indexed version of file (":Gedit :0" of current file)
