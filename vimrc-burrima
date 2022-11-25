@@ -53,3 +53,14 @@ if has('nvim')
     tnoremap <Esc> <C-\><C-n>
     tnoremap <C-v><Esc> <Esc>
 endif
+
+" BTAF LINT -------------------------------------------------------------------
+if !empty(glob("~/sysutil/vimrc-btaflint"))
+  source ~/sysutil/vimrc-btaflint
+endif
+
+"  SONARLINT ------------------------------------------------------------------
+if !empty(glob("~/sysutil/vimrc-sonarlint"))
+  source ~/sysutil/vimrc-sonarlint
+endif
+
