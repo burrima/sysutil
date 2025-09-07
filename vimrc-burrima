@@ -53,3 +53,10 @@ if !empty(glob("~/sysutil/vimrc-sonarlint"))
   source ~/sysutil/vimrc-sonarlint
 endif
 
+" COPILOT ---------------------------------------------------------------------
+call minpac#add('github/copilot.vim')
+call minpac#add('DanBradbury/copilot-chat.vim')
+autocmd VimEnter * Copilot disable
+nnoremap <silent> <leader>ce :Copilot enable<CR>
+nnoremap <silent> <leader>cd :Copilot disable<CR>
+nnoremap <silent> <leader>c<space> :Copilot status<CR>
