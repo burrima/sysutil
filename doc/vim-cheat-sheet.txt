@@ -1,7 +1,7 @@
 #            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 #                    Version 2, December 2004
 #
-# Copyright (C) 2021 Martin Burri <info@burrima.ch>
+# Copyright (C) 2018-2025 Martin Burri <info@burrima.ch>
 #
 # Everyone is permitted to copy and distribute verbatim or modified
 # copies of this license document, and changing it is allowed as long
@@ -16,8 +16,8 @@
 My Personal Vim Cheat Sheet                         (for my vimrc version 2.3.0)
 ================================================================================
 
-This cheat sheet is to be used together with my personal vimrc file
-(see https://bitbucket.org/burrima/sysutil/src/master/README.md)
+This cheat sheet is to be used together with my personal vimrc files
+(see https://github.com/burrima/sysutil)
 
 References ---------------------------------------------------------------------
   [1] Practical Vim, Edit Text at the Speed of Thought, Drew Neil, 2012
@@ -37,6 +37,7 @@ Note: the terminology used is aligned with [1] and [2].
   [count]x          optional number [count] before pressing x
   $ <command>       issue command on bash shell (implicit <CR> to start command)
   (+{plugin})       command(s) provided through {plugin}
+  (+vscode),(-vscode)  only for, not for vscode-neovim
 
 The Vim Way --------------------------------------------------------------------
 See [1], Tip 1-11:
@@ -44,10 +45,10 @@ See [1], Tip 1-11:
   * don't count if you can repeat (e.g. use 'x.....' instead of '6x')
   * make changes repeatable (e.g. use 's' instead of 'xi')
   * act, react, reverse: Make change, repeat it, reverse if done too often
-  * make reasonable undo chunks (chunk = from normal to insert mode and back)
+  * make reasonable undo chunks (change = from normal to insert mode and back)
     (note: arrow keys act like '<Esc>hi', breaking the chunk - use hjkl keys)
   * dot formula: The ideal: One keystroke to move, another to execute
-  * builtin help: ":h <term>" (jump to links with <Space>g and back with <C-o>)
+  * builtin help: ":h <term>" (jump to links with gd and back with <C-o>)
 
 Modes (:h vim-modes) -----------------------------------------------------------
 Vim has different modes and each mode has its own set of commands:
@@ -77,7 +78,6 @@ Basic Commands
   @@                repeat last @ operation (macro or Ex cmd)
   gcc               toggle code commenting of current line
   gcgc or gcu       uncomment the current and adjacent commented lines
-  <leader>b         toggle rainbow mode on/off (off by default) (+rainbow)
 
   Notes:
     * switching from insert to normal mode creates an undo junk (note: arrow
@@ -110,7 +110,7 @@ To be used with a Motion, a Text Object, a search or in Visual Mode
   gc                toggle code commenting
 
   Notes:
-    * Action = Operator + Motion (operator commands are applied to a marked
+    * Action = Operator + Motion (operator commands are applied to a visual
       range or require a motion) - powerful combinations!
     * power move: use search as motion, e.g. "d/{search-term}<CR>"
     * operator doubling (e.g. dd) = apply to whole line
@@ -240,6 +240,7 @@ Command-line Mode Commands (h: ex-cmd-index) -----------------------------------
     * :t. and :m. are like yyp or ddp without overwriting the default register
     * q: to open command history to re-issue (edited) command by <CR>
     * in Ex cmds: % = "current file path", %:h = "% without file name
+    * Command Mode is very limited in (+vscode)
 
 Patterns, Search & Replace -----------------------------------------------------
 In Normal mode:
@@ -283,8 +284,8 @@ Registers (:h registers) -------------------------------------------------------
     * use "_ or "0 (or named registers) when combining yank and change/delete
     * use ":set paste"/":set nopaste" on problems pasting from system clipboard
 
-Buffers (:h buffers) -----------------------------------------------------------
-  <Space>f          launch (+fzf) tool to fuzzy-search and open files
+Buffers (:h buffers) (-vscode) -------------------------------------------------
+  <Space>f          launch (+fzf) tool to fuzzy-search and open files (+vscode)
   <Space>b          show buffer list (+fzf) (use search or {number}<CR> to load)
   <Space>#          switch back to previous buffer (=alternate buffer) in window
   [B,]B,[b,]b       load first, last, prev, next buffer to active window
@@ -307,18 +308,20 @@ Windows, Tabs  (:h windows, :h tabpage) ----------------------------------------
   :q[uit],qa[ll]    quit the current, all window(s) (:q[a]! to force if unsaved)
 
   <C-w>H,J,K,L      move window left-most, bottom-most, ... H,J,K,L
+
+ (-vscode):
   <C-w>[num]x       exchange window with next one (or previous if N/A) or {num}
   <C-w>T            move current window to a separate tab
   <C-w>o            make current window the only one (close others)
-
   <C-w>=            make all windows same size (auto-adjust)
   :res [+-][N]      set window height to max, N, or increase, decrease by N
   :vert res [+-][N] set window width to max, N, or increase, decrease by N
 
-  :te [file]        open [file] in new tab (te=tabedit in vimrc)
+Tabs:
+  :te [file]        open [file] in new tab (te=tabedit in vimrc) (-vscode)
   :tc               close current tab (incl. all split windows) (tc=tabclose)
   gt,gT,{n}gt       next, previous, n-th tab
-  :tabm i           move current tab to position i
+  :tabm i           move current tab to position i (-vscode)
 
   Notes:
     * prefer splits over tabs (tabs are more like "virtual desktops")
@@ -328,7 +331,7 @@ Navigation inside a Window:
   <C-f>,<C-d>,<C-e> scroll down full page, half page, one line
   <C-b>,<C-u>,<C-y> scroll up full page, half page, one line
 
-Quickfix List / Location Lists (:h quickfix) -----------------------------------
+Quickfix List / Location Lists (:h quickfix) (-vscode) -------------------------
   <Space>q,<Space>l open Quickfix-, Location-list (short for :copen,:lopen)
   [Q,]Q,[q,]q       jump to next, previous, first, last item in quickfix list
                     (short for :cfirst, :clast, :cprev, :cnext)
@@ -357,7 +360,7 @@ Macros (:h recording) ----------------------------------------------------------
     * use of iterator possible via expression register, e.g:
       :let i=1<CR> qa I<C-r>=i<CR>)<CR><Esc> :let i+=1<CR> q
 
-Auto Completion ----------------------------------------------------------------
+Auto Completion (-vscode) ------------------------------------------------------
 Using the ALE plugin and a language-server running in the back.
   <C-n>,<C-p>       generic keywords
   <C-x><C-o>        omni-completion (via ALE language-server backend)
@@ -374,12 +377,12 @@ Using the ALE plugin and a language-server running in the back.
   <C-w>             delete (selected) word (generic command useful everywhere)
   <C-e>             revert the originally typed text (exit from auto-completion)
 
-Spell Checking -----------------------------------------------------------------
+Spell Checking (-vscode) -------------------------------------------------------
   :set spellfile=   name of word list where new words are added (*.{enc}.add)
   :set spell[!]     enable [or disable] spell checking
 
   [s,]s             jump to previous, next misspelled word
-  z=                for the word under/after cursor suggest correct word
+  z= (+vscode)      for the word under/after cursor suggest correct word
   zg N              add word under cursor as good word to first/n-th spellfile
   zw N              same as zg but mark word as bad
   zug,zuw           undo last zg, zw command
@@ -387,16 +390,20 @@ Spell Checking -----------------------------------------------------------------
 Code Linting & Navigation ------------------------------------------------------
 Using the ALE plugin and a language-server running in the back.
   [W,]W,[w,]w       go to first, last, previous, next linting warning (+ale)
-  <Space>d          jump to definition (+ale)
-  <Space>t          jump to the definition of the type (+ale)
-  <Space>r          find references (+ale)
+  gd                jump to local declaration (via ctags), also works in :h
+  gD                jump to definition (+ale) (+vscode)
+  gF                jump to declaration (+ale) (+vscode)
+  gh                show hover (+ale) (+vscode)
+  gH                search references (+ale) (+vscode)
+  gO                jump to symbol (+ale), symbol search (+vscode)
   <Space>i          jump to implementation (if language-server supports) (+ale)
-  <Space>s          search symbol under cursor (+ale)
-  <Space>h          get mouse hover info (+ale)
-  :rename           refactor (i.e. rename a symbol) (+ale)
+  <C-w>gd,<C-w>gf   open definition, declaration aside (new split) (+vscode)
+  <tab>             switch between peek editor and reference list (+vscode)
+
+  <Leader>r         refactor (i.e. rename a symbol) (+ale) (+vscode)
   <Leader>t         open (+taglist) to select a tag
 
-Searching files with grep-alikes (see [2], p. 56) (+grepper):
+Searching files with grep-alikes (see [2], p. 56) (+grepper) (-vscode):
   gs                search for the current word, the current visual selection
   :grep <term>      search with grep for the term (alias in vimrc)
   :gitgrep <term>   search with git grep for the term (alias in vimrc)
@@ -405,8 +412,10 @@ Searching files with grep-alikes (see [2], p. 56) (+grepper):
 
 Notes:
   * (+ale) requires a language-server installed (see https://langserver.org)
+  * for python: "pip install jedi-language-server"
+  * (+vscode) has small letter gd and gf to peek definition/declaration
 
-Vimdiff & Git Integration (+signify), (+fugitive) ------------------------------
+Vimdiff & Git Integration (+signify), (+fugitive), (-vscode) -------------------
 In Normal mode:
   [C,[c,]c,]C       jump to the first, prev, next, last hunk in current buffer
   <Leader>gp        show diff of current hunk
@@ -443,6 +452,7 @@ Plugins ------------------------------------------------------------------------
   * search vimrc for "minpac#add" to find installed plugins
   * add/remove entry in .vimrc, then restart Vim and type :PackMaintain
   * type ":h {plugin-name}" to get help
+  * in vscode, only few plugins are installed
 
 Some notable plugins & specific cmds (others marked above with (+{plugin}):
   (+minpac): Manage plugins (see [2], p. 18).
@@ -462,7 +472,7 @@ Some notable plugins & specific cmds (others marked above with (+{plugin}):
     cs{old}{new}    change surrounding {old} to {new}
     ds{s}           delete surrounding {s}
 
-Neovim specific ----------------------------------------------------------------
+Neovim specific (-vscode) ------------------------------------------------------
   :ter[minal]       open a Terminal buffer
   a,A,i,I,...       enter Terminal mode in Terminal buffer
   <Esc>             leave Terminal mode
