@@ -3,7 +3,7 @@
 olddir=`pwd`
 homedir=~
 
-if [ ! -e "vimrc" ]; then
+if [ ! -e "vimrc-base" ]; then
   echo "ERROR: You must be inside sysutil git path" > /dev/stderr
   exit 1
 fi
@@ -12,7 +12,10 @@ fi
 echo "Installing vim package manager..."
 minpacdir="$homedir/.vim/pack/minpac/opt"
 if [ -e "$minpacdir" ]; then
-    echo "minpac is already installed"
+    echo "minpac is already installed, updating..."
+    cd "$minpacdir"/minpac
+    git pull
+    cd "$olddir"
 else
     echo "minpac is not installed, installing now..."
     mkdir -p "$minpacdir"
@@ -29,11 +32,11 @@ if [ -e "$homedir/.vimrc" ]; then
       [Yy]* )
           echo "Creating ~/.vimrc.backup..."
           mv "$homedir/.vimrc" "$homedir/.vimrc.backup"
-          echo "Copying vimrc-user to ~/.vimrc..."
-          cp "vimrc-user" "$homedir/.vimrc"
+          echo "Linking vimrc-base to ~/.vimrc..."
+          ln -s sysutil/vimrc-base "$homedir/.vimrc"
           break;;
       [Nn]* )
-          echo "Please manually source the file vimrc into your own ./vimrc"
+          echo "Please manually source the file vimrc-base into your own ./vimrc"
           echo "and run :PackUpdate after re-strting vim."
           exit
           break;;
@@ -41,8 +44,9 @@ if [ -e "$homedir/.vimrc" ]; then
     esac
   done
 else
-  echo "No ~/.vimrc detected in your home drive, installing template"
-  cp "vimrc-user" "$homedir/.vimrc"
+  echo "No ~/.vimrc detected in your home drive, installing default"
+    echo "Linking vimrc-base to ~/.vimrc..."
+    ln -s sysutil/vimrc-base "$homedir/.vimrc"
 fi
 
 # Install/Update plugins:
@@ -52,6 +56,6 @@ echo "Please wait until it is finished and then quit Vim manually."
 echo "Note: please ignore messages about missing plugins when vim starts..."
 echo "Press <Enter> to continue:"
 read
-vim -c PackUpdate  # exit vim when done
+vim -c PackMaintain  # exit vim when done
 
 echo "Installation done."
