@@ -1,7 +1,7 @@
 "            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
 "                    Version 2, December 2004
 "
-" Copyright (C) 2021 Martin Burri <info@burrima.ch>
+" Copyright (C) 2018-2025 Martin Burri <info@burrima.ch>
 "
 " Everyone is permitted to copy and distribute verbatim or modified
 " copies of this license document, and changing it is allowed as long
@@ -24,62 +24,14 @@ set tabstop=4  " tab width
 set shiftwidth=4  " number of spaces for each step of (auto)indent
 set expandtab  " use spaces instead of tabs
 
-" use maximum color range in tmux environments:
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-set t_Co=256
-set termguicolors
-
-set splitright  " open new vertical splits right of current window
-set splitbelow  " open new horizontal splits right of current window
-
-set ruler  " show line and col number of the cursor position
-set laststatus=2  " always show window status line
 set nowrap  " don't wrap displayed lines
 
 set path=**  " search in all sub-dirs when searching for a file
 
-set colorcolumn=+1  " vertical line at maximum textwidth
-"hi ColorColumn ctermbg=lightgrey
-
 set wildmode=longest,list  " Tab completion like in bash
-set hidden  " allow to have unsaved hidden buffers
 
-" set switchbuf=useopen  " see :help switchbuf
-
-
-" Swap, Backup and Undo Files -------------------------------------------------
-set directory=~/.vim/swap//
-call mkdir (&directory, 'p')
-" uncomment to enable backup files:
-"set backup
-"set backupdir=~/.vim/backup//  " location of backup file
-"call mkdir (&backupdir, 'p')
-" uncoment to store undo-history (reload on next start of vim):
-" set undofile
-" set undodir=~/.vim/undo
-" call mkdir (&undodir, 'p')
-
-augroup restore
-  autocmd!
-  " disable undofile for files in /tmp/:
-  autocmd BufWritePre /tmp/* setlocal noundofile
-  " Always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if line("'\"") > 1 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
-augroup END
-
-" Tell vim to remember certain things when we exit
-"  '10  :  marks will be remembered for up to 10 previously edited files
-"  "100 :  will save up to 100 lines for each register
-"  :20  :  up to 20 lines of command-line history will be remembered
-"  %    :  saves and restores the buffer list
-"  n... :  where to save the viminfo files
-set viminfo='10,\"100,:20,%,n~/.vim/viminfo
+" highlight search occurrences (<C-l> to clear):
+set hlsearch
 
 
 " Key Mappings ----------------------------------------------------------------
@@ -133,9 +85,72 @@ call SetupCommandAlias("tc", "tabclose")
 call SetupCommandAlias("vdiff", "vert diffsplit")
 
 
-" Highlighting ----------------------------------------------------------------
-" highlight search occurrences (<C-l> to clear):
-set hlsearch
+" Neovim specific settings ----------------------------------------------------
+if has('nvim')
+    set viminfo+=n~/.local/share/vim/viminfo
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <C-v><Esc> <Esc>
+endif
+
+
+" Swap, Backup and Undo Files -------------------------------------------------
+set directory=~/.vim/swap//
+call mkdir (&directory, 'p')
+" uncomment to enable backup files:
+"set backup
+"set backupdir=~/.vim/backup//  " location of backup file
+"call mkdir (&backupdir, 'p')
+" uncoment to store undo-history (reload on next start of vim):
+" set undofile
+" set undodir=~/.vim/undo
+" call mkdir (&undodir, 'p')
+
+augroup restore
+  autocmd!
+  " disable undofile for files in /tmp/:
+  autocmd BufWritePre /tmp/* setlocal noundofile
+  " Always jump to the last known cursor position.
+  " Don't do it when the position is invalid or when inside an event handler
+  " (happens when dropping a file on gvim).
+  autocmd BufReadPost *
+    \ if line("'\"") > 1 && line("'\"") <= line("$") |
+    \   exe "normal g`\"" |
+    \ endif
+augroup END
+
+" Tell vim to remember certain things when we exit
+"  '10  :  marks will be remembered for up to 10 previously edited files
+"  "100 :  will save up to 100 lines for each register
+"  :20  :  up to 20 lines of command-line history will be remembered
+"  %    :  saves and restores the buffer list
+"  n... :  where to save the viminfo files
+set viminfo='10,\"100,:20,%,n~/.vim/viminfo
+
+
+" Window/Buffer Management ----------------------------------------------------
+
+set splitright  " open new vertical splits right of current window
+set splitbelow  " open new horizontal splits right of current window
+
+set hidden  " allow to have unsaved hidden buffers
+
+" set switchbuf=useopen  " see :help switchbuf
+
+
+" Appearance ------------------------------------------------------------------
+" Color scheme is under "Plugins"
+
+" use maximum color range in tmux environments:
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set t_Co=256
+set termguicolors
+
+set ruler  " show line and col number of the cursor position
+set laststatus=2  " always show window status line
+
+set colorcolumn=+1  " vertical line at maximum textwidth
+"hi ColorColumn ctermbg=lightgrey
 
 " highlight unprintable chars as error:
 hi clear SpecialKey
@@ -326,9 +341,3 @@ nnoremap X D
 " other interesting plugins:
 " call minpac#add('svermeulen/vim-subversive')  " for quick substitutions
 
-" Neovim specific settings:
-if has('nvim')
-    set viminfo+=n~/.local/share/vim/viminfo
-    tnoremap <Esc> <C-\><C-n>
-    tnoremap <C-v><Esc> <Esc>
-endif
