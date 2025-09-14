@@ -46,7 +46,7 @@ noremap g0 ^
 noremap g$ g_
 noremap ö ;
 noremap é ,
-noremap <Space>g <C-]>
+noremap gd <C-]>
 
 " location-list:
 nnoremap <silent> [l :lprev<CR>
@@ -217,12 +217,12 @@ let g:ale_lsp_suggestions = 1
 let g:ale_maximum_file_size = 500000
 let g:ale_virtualtext_cursor = 0
 let g:ale_virtualtext = 0
-noremap <Space>d :ALEGoToDefinition<CR>
-noremap <Space>t :ALEGoToTypeDefinition<CR>
+noremap gD :ALEGoToDefinition<CR>
+noremap gF :ALEGoToTypeDefinition<CR>
+noremap gh :ALEHover<CR>
+noremap gH :ALEFindReferences<CR>
+noremap gO :ALESymbolSearch <C-r><C-w><CR>
 noremap <Space>i :ALEGoToImplementation<CR>
-noremap <Space>s :ALESymbolSearch <C-r><C-w><CR>
-noremap <Space>r :ALEFindReferences<CR>
-noremap <Space>h :ALEHover<CR>
 call SetupCommandAlias("rename", "ALERename")
 
 " PACK vim-grepper:
