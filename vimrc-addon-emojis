@@ -1,0 +1,34 @@
+"            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+"                    Version 2, December 2004
+"
+" Copyright (C) 2025 Martin Burri <info@burrima.ch>
+"
+" Everyone is permitted to copy and distribute verbatim or modified
+" copies of this license document, and changing it is allowed as long
+" as the name is changed.
+"
+"            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+"   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+"
+"  0. You just DO WHAT THE FUCK YOU WANT TO.
+"
+
+" Font settings ---------------------------------------------------------------
+" Use powerline fonts. This requires the patched powerline-fonts to be installed
+" on the end-system (the system that displays the screen). On Ubuntu, install
+" the fonts-powerline package:
+let g:airline_powerline_fonts = 1
+
+" Emojis for sign column ------------------------------------------------------
+call minpac#add('junegunn/vim-emoji')
+augroup emoji
+    autocmd!
+    autocmd VimEnter *
+            \ let g:ale_sign_error = emoji#for('poop') |
+            \ let g:ale_sign_warning = emoji#for('poop') |
+            \ let g:signify_sign_add = emoji#for('green_heart') |
+            \ let g:signify_sign_delete = emoji#for('broken_heart') |
+            \ let g:signify_sign_delete_first_line = emoji#for('broken_heart') |
+            \ let g:signify_sign_change = emoji#for('blue_heart')
+augroup END
+

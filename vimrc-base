@@ -13,10 +13,6 @@
 "  0. You just DO WHAT THE FUCK YOU WANT TO.
 "
 
-"
-" Personal vimrc file version 2.2.0
-"
-
 " General Config --------------------------------------------------------------
 " map <Leader> key to ',':
 let mapleader = ','
@@ -281,6 +277,12 @@ call minpac#add('lifepillar/vim-gruvbox8')
 set background=dark  " dark or light
 colorscheme gruvbox8
 
+" Use this to increase contrast on low-contrast screens:
+augroup contrastadjust
+    autocmd!
+    autocmd VimEnter * hi Normal guibg=#202020 ctermbg=Black
+augroup END
+
 " fix spelling error highlighting for selected theme:
 hi clear SpellBad SpellLocal SpellCap
 hi SpellBad cterm=underline,bold
@@ -321,3 +323,12 @@ xnoremap x d
 nnoremap xx dd
 nnoremap X D
 
+" other interesting plugins:
+" call minpac#add('svermeulen/vim-subversive')  " for quick substitutions
+
+" Neovim specific settings:
+if has('nvim')
+    set viminfo+=n~/.local/share/vim/viminfo
+    tnoremap <Esc> <C-\><C-n>
+    tnoremap <C-v><Esc> <Esc>
+endif

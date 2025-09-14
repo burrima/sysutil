@@ -1,0 +1,40 @@
+"            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+"                    Version 2, December 2004
+"
+" Copyright (C) 2025 Martin Burri <info@burrima.ch>
+"
+" Everyone is permitted to copy and distribute verbatim or modified
+" copies of this license document, and changing it is allowed as long
+" as the name is changed.
+"
+"            DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
+"   TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION
+"
+"  0. You just DO WHAT THE FUCK YOU WANT TO.
+"
+
+" Load vimrcs from sysutil ----------------------------------------------------
+if !empty(glob("~/sysutil/vimrc-base"))
+  source ~/sysutil/vimrc-base
+endif
+
+if !empty(glob("~/sysutil/vimrc-addon-neovim"))
+  source ~/sysutil/vimrc-addon-neovim
+endif
+
+if !empty(glob("~/sysutil/vimrc-addon-emojis"))
+  source ~/sysutil/vimrc-addon-emojis
+endif
+
+if !empty(glob("~/sysutil/vimrc-addon-sonarlint"))
+  source ~/sysutil/vimrc-addon-sonarlint
+endif
+
+if !empty(glob("~/sysutil/vimrc-addon-btaflint"))
+  source ~/sysutil/vimrc-addon-btaflint
+endif
+
+if !empty(glob("~/sysutil/vimrc-addon-copilot"))
+  source ~/sysutil/vimrc-addon-copilot
+endif
+
