@@ -41,6 +41,14 @@ noremap <Space>g <C-]>
 " gq is broken, but luckily we have gw:
 noremap gq gw
 
+" Abbreviations of Ex-Commands ------------------------------------------------
+" See vscode-neovim documnetation
+AlterCommand tp Tabprevious  " also gT
+AlterCommand tn Tabnext  " also gt
+AlterCommand te Tabedit
+AlterCommand tc Tabclose
+AlterCommand to Tabonly
+
 " Highlighting ----------------------------------------------------------------
 " highlight search occurrences (<C-l> to clear):
 set hlsearch

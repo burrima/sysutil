@@ -1,4 +1,10 @@
 
+# force 256 colors
+TERM=screen-256color
+
+# set vi mode on bash shell
+set -o vi
+
 # use vim or nvim:
 export VISUAL=vim
 
@@ -24,3 +30,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+if [ -f ~/.bash_credentials ]
+then
+    . ~/.bash_credentials
+fi

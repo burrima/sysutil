@@ -78,10 +78,11 @@ function! SetupCommandAlias(input, output)
        \ .'? ("'.a:output.'") : ("'.a:input.'"))'
 endfunction
 
-call SetupCommandAlias("tp", "tabprevious")
-call SetupCommandAlias("tn", "tabnext")
+call SetupCommandAlias("tp", "tabprevious")  " also gT
+call SetupCommandAlias("tn", "tabnext")  " also gt
 call SetupCommandAlias("te", "tabedit")
 call SetupCommandAlias("tc", "tabclose")
+call SetupCommandAlias("to", "tabonly")
 call SetupCommandAlias("vdiff", "vert diffsplit")
 
 
@@ -94,7 +95,7 @@ endif
 
 
 " Swap, Backup and Undo Files -------------------------------------------------
-set directory=~/.vim/swap//
+set directory=~/.cache/vim/swap//
 call mkdir (&directory, 'p')
 " uncomment to enable backup files:
 "set backup
