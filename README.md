@@ -1,18 +1,47 @@
 # sysutil - system utilities to share among different computers
 
 The purpose of this repository is to collect some utilities that are shared
-among different computers. You are free to use my stuff in here but I don't take
-liability for anything. There are the following utilities available:
+among different computers. I use them to have consistent experience between
+different hosts at work, but also at home. You are free to use this tools and
+configuration files but I don't take any liability. The following utilities are
+available:
 
-- [Vim 8 Configuration](#vim-8)
+- [Vim Configuration](#vim)
+- [vscode-neovim Configuration](#vscode-neovim)
 - [Git Configuration](#git-config)
 - [Bash Aliases](#bash-aliases)
+- [Remote Settings Sync](#remote-settings-sync)
 
-## Vim 8 Configuration
+## Vim
 
-This repository contains a [vimrc](vimrc) file that you can use to have the same
-Vim experience than I have. Along with that, you can use my
-[vim-cheat-sheet](doc/vim-cheat-sheet.txt) that is specific to my vimrc file.
+This repository contains a hierarchy of vimrc files. There are two main files
+which import other "add-on"-files. The idea is to link either `vimrc-base` or
+`vimrc-office-btaf` to the home folder as `~/.vimrc`. This can be done manually
+or better with the script `vim-setup.sh`. This script ensures that the initial
+package manger repository (https://github.com/k-takata/minpac) is cloned to the
+vim plugin directory, then links the `vimrc-base` file and finally starts vim to
+install the required plugins as specified in the linked vimrc file.
+
+Along with the vimrc files there is the
+[vim-cheat-sheet](doc/vim-cheat-sheet.txt) which is specific to my personal
+vimrc files. It is a good reference to learn and re-learn all key-bindings in my
+repertoire.
+
+The file `vimrc-base` contains basic settings and all required plugins for my
+personal projects. It is the minimum required for me. The file
+`vimrc-office-btaf` additionally imports the add-ons emojis, sonarlint, btaflint
+and copilot - overall just a bit more fun to work with. Emojis is a fun-plugin
+that uses emojis to mark changed lines.  Sonarlint and btaflint are used for
+static code analysis (btaflint is proprietary to my company). Both plugins
+required corresponding tools to be installed on the host. Copilot is the
+Microsoft AI integration. Also this needs to be properly set up (see
+https://github.com/github/copilot.vim).
+
+The vimrc files are designed to work with Vim version >= 8. They should be safe
+for neovim as well, I used neovim for some time. Currently, I am more often
+using [vscode-neovim](#vscode-neovim), especially at work. The reason for this
+is that the modern AI tools are way better integrated. But I still use plain old
+Vim often enough to properly maintain the config files in this repository.
 
 ### References
 
@@ -47,38 +76,24 @@ very first steps:
 $ vimtutor
 ```
 
+If you are a work mate of me, you don't need to install anything, it is all
+there on the test-automation hosts.
+
 #### Install vimrc
 
 Installing the vimrc is very simple:
 
 ```
 $ cd ~
-$ git clone https://bitbucket.org/burrima/sysutil.git
+$ git clone https://github.com/burrima/sysutil
 $ cd sysutil
 $ ./vim-setup.sh  # -> follow the instructions
 ```
 
 The installation will ask you to overwrite the existing `~/.vimrc` file. If you
 answer with yes, a backup called `~/.vimrc-backup` will be made before. So, it's
-pretty safe to say yes. If you say no, then you have to manually source the
-`sysutil/vimrc` file into your own vimrc config file (use `vimrc-user` as
-inspiration).
-
-The reason why the new installation process does not copy the vimrc directly to
-your home drive is that it leaves you the possibility to add your own personal
-(or computer specific) settings outside of version control (you are responsible
-for your own changes by your own).
-
-Note: If you are a work-mate of me, working with the BTAF framework, you have to
-issue the following additional commands:
-```
-$ mkdir -p ~/.vim/pack/btaflint/start/btaflint/plugin/
-$ ln -s /opt/btaflint.vim ~/.vim/pack/btaflint/start/btaflint/plugin/btaflint.vim
-```
-This will install a small local plugin as an extension to ALE. It is needed to
-make the `btaflint` extra linting script active.
-
-If you are brave, you may copy or link the file `vimrc-burrima` to `~/.vimrc`.
+pretty safe to say yes. If you say no, then you have to manually link the
+desired vimrc file to `~/.vimrc`.
 
 To update the vimrc after you have done the first installation, the following
 steps are sufficient:
@@ -88,19 +103,20 @@ $ git pull
 $ vim
 :PackMaintain
 ```
-It will keep your local `~/.vimrc` file untouched.
+This will update all vim packages as defined in the updated vimrc file.
 
 #### Install Powerline Fonts
 The airline package for the status line can make use of so-called "Powerline
-Fonts" for a more "modern" look. These fonts are patched, such that they contain
-special symbols in the higher (usually unused) regions. The use of this feature
-is optional and must be enabled explicitly in your local .vimrc file.
+Fonts" for a more "modern" look (and emojis). These fonts are patched, such that
+they contain special symbols in the higher (usually unused) regions. The use of
+this feature is optional and must be enabled explicitly in your local .vimrc
+file.
 
 Most importantly, you have to install the fonts on the host that is actually
 rendering the Vim screen. Normally, this is the PC where you work on (when
 using Vim over SSH, fonts need to be installed on the client side).
 
-To install them in Ubuntu 20.04, type:
+To install them in Ubuntu 24.04, type:
 ```
 $ sudo apt install fonts-powerline
 ```
@@ -135,7 +151,7 @@ use the Operator `gU` to capitalize.
 #### Install Language Servers (LSP)
 
 Code navigation (go-to-definition etc), as well as auto-completion and
-code-refactoring is now possible in Vim through the Language Server Protocol.
+code-refactoring is possible in Vim through the Language Server Protocol.
 There is - at the time being - heavy activity ongoing on this topic. So, I
 decided for a simple, easy to install and still flexible solution: The ALE
 plugin comes already with support for Language Servers. It is maybe not the most
@@ -207,12 +223,116 @@ packages.
 
 Uninstalling is as easy as removing the path again.
 
+### Other Resources
+  * Drew Neil's vimcasts and blog: <https://vimcasts.org>
+  * <https://www.vimfromscratch.com>
+  * Find free key mappings: <http://vimcasts.org/blog/2014/02/follow-my-leader/>
 
-### Vimrc revision history
+
+## vscode-neovim
+
+Yes, I started using VsCode at work - for the simple reason of better
+integration of modern AI tools. There are plugins which work fine in plain Vim -
+and I use them as well - but the experience in VsCode is better for the time
+being.
+
+In my case, VsCode is running on Windows 11. But of course, I need all the Vim
+power under the hood. This is possible with the plugin
+https://github.com/vscode-neovim/vscode-neovim - thanks to volunteers which
+provide this great tool!
+
+To make it work, you need to install the original neovim (nvim) from
+https://neovim.io/. Neovim must run stand-alone on the Windows PC to make it
+work. Due to restrictions, I had to unzip the provided archive into:
+`C:/users/<user>/bin/`. Then, I had to provide the path to nvim.exe to the
+vscode-neovim plugin (open settings in VsCode and search for neovim). See also
+the instructions on https://github.com/vscode-neovim/vscode-neovim.
+
+You also need Git to be installed on Windows. Git is used to manage the Vim
+plugins. If you are a work-mate of me, then you have to order Git in the company
+portal.
+
+When everything is installed, neovim should already be working in VsCode. The
+normal mode is handled by neovim while the insert mode is the normal VsCode
+editor (as far as I understood the documentation).
+
+Now, copy the file `vimrc-vscode-neovim`, re-named as `init.vim` into the
+folder: `C:/users/<user>/AppData/Local/nvim/`. This will bring my known settings
+to vscode-neovim.
+
+But first, you have to clone https://github.com/k-takata/minpac into the nvim
+plugins directory. See on the linked page how to do it. Then, run nvim from the
+installed bin folder and type `:PackMaintain` followed by Enter. This will
+install all required plugins.
+
+If all went well, you are ready to use vscode-neovim the way I do. Remember that
+you have always the [vim-cheat-sheet](doc/vim-cheat-sheet.txt) at hand if you
+are lost or want to learn something new.
+
+
+## Git Config
+
+If you'd like to use my general git settings, then add the following line to
+your personal `~/.gitconfig` file:
+
+```
+[include]
+	path = sysutil/gitconfig
+```
+
+My gitconfig file defines to use vim as editor and vimdiff as default diff tool.
+Furthermore, it defines some abbreviations and contains other useful settings.
+
+
+## Bash Aliases
+
+If you want to use my Bash aliases, then do:
+
+```
+$ cd ~
+$ ln -s sysutil/bash\_aliases .bash\_aliases
+```
+
+My bash\_aliases ensure that 256 colors are used in terminal (I had issues on
+SSH-reconnect with lost colors). It defines to use vi-emulated mode on the bash
+shell, defines useful command abbreviations (alias) and defines some settings
+for NVM (node version manager) - used to install nodejs which is required only
+if you want to integrate Copilot into Vim.
+
+ Last but not least, my bash\_aliases
+import `~/.bash\_credentials` if exists. This can be used to define API keys as
+variables to be used as command arguments. Please make sure that this file is
+not readable by any other user (`chmod 600 ~/.bash\_credentials`).
+
+
+## Remote Settings Sync
+
+There are two scripts which I use to synchronize all required settings from one
+hosts home-drive to another host: `sync-from-remote.sh` and
+`setup-dependent-host.sh`. This allows me to have consistent setups on different
+hosts at work. I only have to maintain one host and the others just copy all
+required files.
+
+Better would be a more sophisticated solution, e.g. with Active Directory and
+cloud storage - but the solution is so simple that it just works (note: all
+hosts are identical).
+
+You may want to use those files for your own purpose, but I urge you to only do
+so if you understand what is going on. I am not taking any responsibility for
+lost or overwritten files. This is a fully personal feature and nothing robust.
+
+
+### Revision History
+
+#### Version 2.4.0
+  * Lots of improvements
+  * Add vscode-neovim
+  * Add Remote Settings Sync
+  * Re-work README.md
 
 #### Version 2.3.0
 Incremental update:
-  * bash_aliases: add further shortcuts: ls variants
+  * bash\_aliases: add further shortcuts: ls variants
   * vimrc cleanup/fixes:
     * disable inline-ale linting errors because it causes visual problems
     * remove "set nocompatible" which is contained in vim-sensible
@@ -225,6 +345,7 @@ Incremental update:
     * switch to gruvbox8 color scheme
   * gitconfig: extend with further commands
   * update vim cheat sheet
+
 #### Version 2.2.0
 Add support for Neovim (and other updates):
   * Let user choose default editor (vim or nvim) in bash_aliases
@@ -291,45 +412,3 @@ Use full path in backup and swap files to prevent file clashes on shared PCs.
 Initial version from 2014-2018, after reading the book [1].
 
 
-### Personal Vim 8 Roadmap
-
-There is still a lot more to explore about Vim. This is a collection of possible
-next steps:
-
-  * Collect experience with ALE and LSP and maybe look for better solutions if
-    needed, e.g.:
-      + find-references does not show code snippets
-      + auto-completion is unnatural to use (<C-n> is a hard reach)
-  * Code folding (already built-in to vim, see `:h folding`)
-  * Explore possibilities of Git integration (vim-fugitive) - see
-    <http://vimcasts.org/blog/2011/05/the-fugitive-series/>
-  * Explore further text objects (e.g. "inner function") and how to define own
-    ones when needed
-  * More modern looking color scheme
-  * Check out the abbreviation feature (:h abbreviations)
-
-### Other Resources
-  * Drew Neil's vimcasts and blog: <https://vimcasts.org>
-  * <https://www.vimfromscratch.com>
-  * Find free key mappings: <http://vimcasts.org/blog/2014/02/follow-my-leader/>
-
-
-## Git Config
-
-If you'd like to use my general git settings, then add the following line to
-your personal `~/.gitconfig` file:
-
-```
-[include]
-	path = sysutil/gitconfig
-```
-
-
-## Bash Aliases
-
-If you want to use my Bash aliases, then do:
-
-```
-$ cd ~
-$ ln -s sysutil/bash\_aliases .bash\_aliases
-```
