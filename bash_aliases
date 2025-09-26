@@ -1,7 +1,4 @@
 
-# force 256 colors
-TERM=screen-256color
-
 # set vi mode on bash shell
 set -o vi
 
