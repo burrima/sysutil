@@ -322,7 +322,7 @@ so if you understand what is going on. I am not taking any responsibility for
 lost or overwritten files. This is a fully personal feature and nothing robust.
 
 
-### Revision History
+## Revision History
 
 #### Version 2.4.0
   * Lots of improvements
